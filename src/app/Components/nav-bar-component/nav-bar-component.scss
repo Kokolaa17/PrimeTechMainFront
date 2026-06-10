@@ -518,3 +518,53 @@
     }
   }
 }
+
+// Clear button (×) inside search input
+.search-clear {
+  position: absolute;
+  right: 36px;         // sits left of the search icon
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #aaa;
+  font-size: 13px;
+  z-index: 2;
+  transition: color 0.15s;
+
+  &:hover { color: #ec5e2a; }
+}
+
+// Spinner replaces the search icon while loading
+.search-icon {
+  // existing styles kept — fa-spin adds animation automatically
+  transition: opacity 0.15s;
+}
+
+// "See all results" footer row in the dropdown
+.search-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid #f0f0f0;
+  cursor: pointer;
+  font-size: 13px;
+  color: #ec5e2a;
+  font-weight: 600;
+  border-radius: 0 0 12px 12px;
+  transition: background 0.15s;
+
+  &:hover { background: #fff5f0; }
+
+  i { font-size: 12px; }
+}
+
+// Empty / loading state inside dropdown
+.search-empty {
+  padding: 20px;
+  text-align: center;
+  color: #bbb;
+  font-size: 14px;
+
+  i { font-size: 18px; }
+}

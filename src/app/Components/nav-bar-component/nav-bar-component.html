@@ -11,61 +11,156 @@
     </div>
   </div>
 </div>
+
 <nav class="main-nav">
   <div class="nav-container">
+
+    <!-- Logo -->
     <div class="logo-text" routerLink="/">
       <img src="/images/primetechlogo.png" alt="PrimeTech Logo">
       <h1>PrimeTech</h1>
     </div>
-    @if (userRole() !== 1 ) {
-      <div class="search">
+
+    <!-- Search -->
+    @if (userRole() !== 1) {
+      <div class="search" (clickOutside)="closeDropdown()">
         <div class="input-container">
-          <input type="text" placeholder="{{ 'nav.search' | translate }}">
-          <i class="fa-solid fa-magnifying-glass search-icon"></i> @if (searchResult().length > 0) { <div class="search-dropdown">
-            <div class="search-card">
-              <div class="search-card__image">
-                <img src="#" alt="Product Name" />
-                <span class="search-card__badge in">In stock</span>
-              </div>
-              <div class="search-card__info">
-                <h4>Product Name</h4>
-                <div class="search-card__price">
-                  <span class="current">$99.99</span>
-                  <span class="original">$129.99</span>
+
+          <input
+            #searchInput
+            type="text"
+            [placeholder]="'nav.search' | translate"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchInput()"
+            (keydown.enter)="goToShopWithSearch()"
+            (focus)="onSearchFocus()"
+            autocomplete="off" />
+
+          <!-- Clear button -->
+          @if (searchQuery) {
+            <i class="fa-solid fa-xmark search-clear" (click)="clearSearch()"></i>
+          }
+
+          <!-- Search icon / loading -->
+          @if (searchLoading()) {
+            <i class="fa-solid fa-spinner fa-spin search-icon"></i>
+          } @else {
+            <i class="fa-solid fa-magnifying-glass search-icon" (click)="goToShopWithSearch()"></i>
+          }
+
+          <!-- Dropdown -->
+          @if (isDropdownOpen() && searchQuery.length >= 1) {
+            <div class="search-dropdown">
+
+              @if (searchLoading()) {
+                <div class="search-empty">
+                  <i class="fa-solid fa-spinner fa-spin"></i>
                 </div>
-                <div class="search-card__actions">
-                  <button class="btn-details">
-                    <i class="fa-solid fa-eye"></i>
-                  </button>
+              }
+
+              @else if (searchResult().length === 0) {
+                <div class="search-empty">
+                  {{ 'nav.noResults' | translate }}
                 </div>
-              </div>
+              }
+
+              @else {
+                @for (product of searchResult(); track product.id) {
+                  <div class="search-card" (click)="goToDetails(product.id)">
+
+                    <!-- Image -->
+                    <div class="search-card__image">
+                      <img
+                        [src]="product.thumbnailURL ?? product.images?.[0] ?? '/images/placeholder.png'"
+                        [alt]="product.name" />
+                      <span class="search-card__badge"
+                        [class.out]="product.stock === 0"
+                        [class.in]="product.stock > 0">
+                        {{ product.stock === 0
+                          ? ('nav.outOfStock' | translate)
+                          : ('nav.inStock' | translate) }}
+                      </span>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="search-card__info">
+                      <h4>{{ product.name }}</h4>
+                      <div class="search-card__price">
+                        <span class="current">
+                          {{ (product.discountPrice ?? product.price) | number:'1.0-2' }}$
+                        </span>
+                        @if (product.discountPrice && product.discountPrice < product.price) {
+                          <span class="original">{{ product.price | number:'1.0-2' }}$</span>
+                        }
+                      </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="search-card__actions">
+                      <button class="btn-details"
+                        (click)="$event.stopPropagation(); goToDetails(product.id)">
+                        <i class="fa-solid fa-eye"></i>
+                      </button>
+                      @if (product.stock > 0) {
+                        <button class="btn-cart"
+                          (click)="$event.stopPropagation(); addToCart(product.id)">
+                          <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                      }
+                    </div>
+
+                  </div>
+                }
+
+                <!-- "See all results" footer -->
+                <div class="search-footer" (click)="goToShopWithSearch()">
+                  <i class="fa-solid fa-arrow-right"></i>
+                  {{ 'nav.seeAllResults' | translate }} "{{ searchQuery }}"
+                </div>
+              }
+
             </div>
-          </div> }
+          }
+
         </div>
       </div>
     }
+
+    <!-- Nav items -->
     <ul>
       @if (userRole() != 1) {
         <li (click)="toggleCartModal()">
-          <i class="fa-solid fa-cart-arrow-down"></i> {{ 'nav.cart' | translate }}
-          <span>{{totalItems()}}</span>
-      </li> 
+          <i class="fa-solid fa-cart-arrow-down"></i>
+          {{ 'nav.cart' | translate }}
+          <span>{{ totalItems() }}</span>
+        </li>
       }
-      @if (isUserLoggedIn()) { <li (click)="openUserPage()">
-        <i class="fa-solid fa-circle-user"></i> {{ userName() }}
-      </li> } @else { <li (click)="openLogIn()">
-        <i class="fa-solid fa-circle-user"></i> {{ 'nav.log in' | translate }}
-      </li> } <li (click)="toggleSideMenuModal()" style="background-color: #EC5E2A; color: #fff;">
+
+      @if (isUserLoggedIn()) {
+        <li (click)="openUserPage()">
+          <i class="fa-solid fa-circle-user"></i>
+          {{ userName() }}
+        </li>
+      } @else {
+        <li (click)="openLogIn()">
+          <i class="fa-solid fa-circle-user"></i>
+          {{ 'nav.log in' | translate }}
+        </li>
+      }
+
+      <li (click)="toggleSideMenuModal()" style="background-color: #EC5E2A; color: #fff;">
         <i class="fa-solid fa-bars"></i>
       </li>
     </ul>
+
   </div>
 </nav>
 
- @if (isLogInModalOpen()) { 
-  <app-log-in-modal></app-log-in-modal> 
-} @if (isVerifyUserModalOpen()) { 
-  <app-verify-user-modal></app-verify-user-modal> 
+@if (isLogInModalOpen()) {
+  <app-log-in-modal></app-log-in-modal>
+}
+@if (isVerifyUserModalOpen()) {
+  <app-verify-user-modal></app-verify-user-modal>
 }
 @if (isSideMenuModalOpen()) {
   <app-side-menu-modal></app-side-menu-modal>
@@ -73,4 +168,3 @@
 @if (isCartModalOpen()) {
   <app-cart-modal></app-cart-modal>
 }
-

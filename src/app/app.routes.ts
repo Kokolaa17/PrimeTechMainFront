@@ -83,5 +83,9 @@ export const routes: Routes = [
     {
       "path" : "my-orders/:userId",
       "loadComponent" : () => import("./Pages/my-orders-page/my-orders-page").then(m => m.MyOrdersPage)
+    },
+    {
+      "path" : "shop-page",
+      "loadComponent" : () => import("./Pages/shop-page/shop-page").then(m => m.shopPage)
     }
 ];

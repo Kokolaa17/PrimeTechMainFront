@@ -11,6 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CommercialComponent } from "../../Components/HomePageComponents/commercial-component/commercial-component";
 import { TranslateModule } from '@ngx-translate/core';
 import { CategoriesSwiperComponent } from '../../Components/HomePageComponents/categories-swiper-component/categories-swiper-component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -20,6 +21,7 @@ import { CategoriesSwiperComponent } from '../../Components/HomePageComponents/c
 })
 export class HomePage implements OnInit, OnDestroy {
   private readonly _http = inject(ApiConnectionService);
+  private readonly _router = inject(Router)
 
   private intervalId?: number;
 
@@ -54,5 +56,11 @@ export class HomePage implements OnInit, OnDestroy {
         (value) => (value + 1) % this.welcomeSectionImages.length
       );
     }, 5000);
+  }
+
+  goToShopPage() {
+    this._router.navigate(['/shop-page']).then(() => {
+      window.scrollTo(0, 0);
+    });
   }
 }

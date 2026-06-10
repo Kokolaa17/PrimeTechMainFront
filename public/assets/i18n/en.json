@@ -5,7 +5,9 @@
         "user": "User",
         "log in": "Log In",
         "search": "Search...",
-        "total": "Total"
+        "total": "Total",
+        "noResults" : "No results!",
+        "seeAllResults" : "see all results"
     },
     "cart": {
         "title": "Cart",
@@ -321,5 +323,41 @@
             "cancelOrder": "Cancel Order"
         },
         "uid": "UID"
+    },
+     "shop": {
+    "filterBy": "Filter by",
+    "sortBy": "Sort by",
+    "category": "Category",
+    "allCategories": "All Categories",
+    "brand": "Brand",
+    "allBrands": "All Brands",
+    "priceRange": "Price Range",
+    "from": "From",
+    "to": "To",
+    "minRating": "Min Rating",
+    "anyRating": "Any Rating",
+    "andUp": "& up",
+    "inStockOnly": "In Stock Only",
+    "perPage": "Per page",
+    "clearAll": "Clear All",
+    "clearFilters": "Clear filters",
+    "productsFound": "products found",
+    "for": "for",
+    "page": "Page",
+    "loading": "Loading products…",
+    "noProducts": "No products match your filters",
+    "outOfStock": "Out of Stock",
+    "new": "NEW",
+    "hot": "HOT",
+    "soldOut": "Sold Out",
+    "addToCart": "Add to Cart",
+    "sort": {
+      "default": "Default",
+      "priceAsc": "Price: Low → High",
+      "priceDesc": "Price: High → Low",
+      "newest": "Newest First",
+      "topRated": "Top Rated",
+      "mostPopular": "Most Popular"
     }
+  }
 }

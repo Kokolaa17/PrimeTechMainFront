@@ -1,0 +1,304 @@
+<div class="shop-layout">
+
+  <!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <h3 class="sidebar-title">Filter by</h3>
+
+    <!-- Sort -->
+    <div class="filter-group" [class.open]="openSections()['sort']">
+      <button class="filter-header" (click)="toggleSection('sort')">
+        <span>Sort by</span>
+        <span class="icon">{{ openSections()['sort'] ? '−' : '+' }}</span>
+      </button>
+      <div class="filter-body">
+        @for (opt of sortOptions; track opt.value) {
+          <label class="filter-option">
+            <input type="radio" name="sortBy"
+              [value]="opt.value"
+              [ngModel]="filters.sortBy"
+              (change)="setSort(opt.value)" />
+            <span>{{ opt.label }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Category -->
+    <div class="filter-group" [class.open]="openSections()['category']">
+      <button class="filter-header" (click)="toggleSection('category')">
+        <span>Category</span>
+        <span class="icon">{{ openSections()['category'] ? '−' : '+' }}</span>
+      </button>
+      <div class="filter-body">
+        <label class="filter-option">
+          <input type="radio" name="category" [value]="undefined"
+            [checked]="!filters.categoryId"
+            (change)="setCategory(undefined)" />
+          <span>All Categories</span>
+        </label>
+        @for (cat of categories(); track cat.id) {
+          <label class="filter-option">
+            <input type="radio" name="category" [value]="cat.id"
+              [checked]="filters.categoryId === cat.id"
+              (change)="setCategory(cat.id)" />
+            <span>{{ cat.name }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Brand -->
+    <div class="filter-group" [class.open]="openSections()['brand']">
+      <button class="filter-header" (click)="toggleSection('brand')">
+        <span>Brand</span>
+        <span class="icon">{{ openSections()['brand'] ? '−' : '+' }}</span>
+      </button>
+      <div class="filter-body">
+        <label class="filter-option">
+          <input type="radio" name="brand" [value]="undefined"
+            [checked]="!filters.brandId"
+            (change)="setBrand(undefined)" />
+          <span>All Brands</span>
+        </label>
+        @for (brand of brands(); track brand.id) {
+          <label class="filter-option">
+            <input type="radio" name="brand" [value]="brand.id"
+              [checked]="filters.brandId === brand.id"
+              (change)="setBrand(brand.id)" />
+            <span>{{ brand.name }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Price Range -->
+    <div class="filter-group" [class.open]="openSections()['price']">
+      <button class="filter-header" (click)="toggleSection('price')">
+        <span>Price Range</span>
+        <span class="icon">{{ openSections()['price'] ? '−' : '+' }}</span>
+      </button>
+      <div class="filter-body">
+        <div class="price-inputs">
+          <div class="price-field">
+            <label>From</label>
+            <input type="number" placeholder="0"
+              [(ngModel)]="filters.minPrice"
+              (change)="onFilterChange()" />
+          </div>
+          <span class="price-sep">—</span>
+          <div class="price-field">
+            <label>To</label>
+            <input type="number" placeholder="9999"
+              [(ngModel)]="filters.maxPrice"
+              (change)="onFilterChange()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Min Rating -->
+    <div class="filter-group" [class.open]="openSections()['rating']">
+      <button class="filter-header" (click)="toggleSection('rating')">
+        <span>Min Rating</span>
+        <span class="icon">{{ openSections()['rating'] ? '−' : '+' }}</span>
+      </button>
+      <div class="filter-body">
+        <label class="filter-option">
+          <input type="radio" name="rating" [value]="undefined"
+            [checked]="!filters.minRating"
+            (change)="setRating(undefined)" />
+          <span>Any Rating</span>
+        </label>
+        @for (r of ratingOptions; track r) {
+          <label class="filter-option">
+            <input type="radio" name="rating" [value]="r"
+              [checked]="filters.minRating === r"
+              (change)="setRating(r)" />
+            <span class="rating-stars">
+              <span class="stars-filled">{{ '★'.repeat(r) }}</span><span class="stars-empty">{{ '☆'.repeat(5 - r) }}</span>
+              &nbsp;&amp; up
+            </span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="filter-group open">
+      <div class="filter-body toggles-body">
+        <label class="toggle-row">
+          <span>In Stock Only</span>
+          <div class="toggle-wrap">
+            <input type="checkbox" [(ngModel)]="filters.inStock" (change)="onFilterChange()" />
+            <span class="toggle-track"></span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Page Size -->
+    <div class="filter-group open">
+      <div class="filter-body">
+        <div class="page-size-row">
+          <span class="page-size-label">Per page</span>
+          <div class="page-size-btns">
+            @for (size of pageSizes; track size) {
+              <button
+                class="ps-btn"
+                [class.active]="filters.pageSize === size"
+                (click)="filters.pageSize = size; onFilterChange()">
+                {{ size }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="get-all-btn" (click)="clearFilters()">
+      CLEAR ALL
+      <i class="fa-solid fa-reply-all"></i>
+    </button>
+  </aside>
+
+  <!-- ═══ PRODUCT GRID ══════════════════════════════════════════════════════ -->
+  <main class="product-grid-area">
+
+    <!-- Results bar -->
+    <div class="results-bar">
+      <span class="results-count">
+        <strong>{{ totalCount() }}</strong> products found
+        @if (filters.search) { <span class="results-query">for "{{ filters.search }}"</span> }
+      </span>
+      <div class="results-right">
+        @if (totalPages() > 1) {
+          <span class="page-indicator">Page {{ filters.page }} / {{ totalPages() }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <span>Loading products…</span>
+      </div>
+    }
+
+    <!-- Grid -->
+    @else if (products().length > 0) {
+      <div class="product-grid">
+        @for (product of products(); track product.id) {
+          <div class="product-card">
+
+            <!-- Out of stock ribbon -->
+            @if (product.stock === 0) {
+              <div class="card-badges">
+                <span class="badge out-of-stock">Out of Stock</span>
+              </div>
+            }
+
+            <!-- NEW / HOT badge -->
+            @if (product.stock > 0) {
+              @if (isNew(product.createdAt)) {
+                <span class="badge-corner new">NEW</span>
+              } @else if ((product.salesCount ?? 0) > 50) {
+                <span class="badge-corner hot">HOT</span>
+              }
+            }
+
+            <!-- Price tag -->
+            <div class="price-tag">
+              <span class="current-price">{{ effectivePrice(product) | number:'1.0-2' }}$</span>
+              @if (getDiscountPercent(product) > 0) {
+                <span class="original-price">{{ product.price | number:'1.0-2' }}$</span>
+                <span class="discount-badge">-{{ getDiscountPercent(product) }}%</span>
+              }
+            </div>
+
+            <!-- Image -->
+            <div class="card-image" (click)="goToDetails(product.id)">
+              <img [src]="product.thumbnailURL ?? product.images?.[0]" [alt]="product.name" />
+            </div>
+
+            <!-- Info -->
+            <div class="card-info">
+              <!-- Rating -->
+              @if (product.averageRating) {
+                <div class="card-rating">
+                  <span class="stars">{{ getStars(product.averageRating) }}</span>
+                  <span class="rating-count">({{ product.reviewsCount ?? 0 }})</span>
+                </div>
+              }
+
+              <h4 class="card-name">{{ product.name }}</h4>
+              <div class="card-meta">
+                <span class="card-brand">{{ product.brand ?? product.brandName }}</span>
+                @if (product.warrantyMonths) {
+                  <span class="card-warranty">
+                    <i class="fa-solid fa-shield-halved"></i> {{ product.warrantyMonths }}mo
+                  </span>
+                }
+              </div>
+
+              <button
+                class="add-to-cart-btn"
+                (click)="addToCart(product.id)"
+                [disabled]="product.stock === 0">
+                <i class="fa-solid fa-cart-arrow-down"></i>
+                {{ product.stock === 0 ? 'Sold Out' : 'ADD TO CART' }}
+              </button>
+            </div>
+
+            <!-- Feedback overlays -->
+            @if (addToCartErrors().get(product.id)) {
+              <div class="card-overlay error">
+                <p>{{ addToCartErrors().get(product.id) }}</p>
+              </div>
+            }
+            @if (addToCartSuccess().get(product.id)) {
+              <div class="card-overlay success">
+                <i class="fa-solid fa-box-archive fa-beat"></i>
+              </div>
+            }
+
+          </div>
+        }
+      </div>
+
+      <!-- Pagination -->
+      @if (totalPages() > 1) {
+        <nav class="pagination">
+          <button class="page-btn nav" [disabled]="filters.page === 1" (click)="setPage(filters.page! - 1)">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          @for (p of pageNumbers(); track p) {
+            @if (p === 1 || p === totalPages() || (p >= (filters.page! - 2) && p <= (filters.page! + 2))) {
+              <button class="page-btn" [class.active]="p === filters.page" (click)="setPage(p)">{{ p }}</button>
+            } @else if (p === (filters.page! - 3) || p === (filters.page! + 3)) {
+              <span class="page-ellipsis">…</span>
+            }
+          }
+
+          <button class="page-btn nav" [disabled]="filters.page === totalPages()" (click)="setPage(filters.page! + 1)">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </nav>
+      }
+
+    }
+
+    <!-- Empty state -->
+    @else {
+      <div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <p>No products match your filters</p>
+        <button class="empty-reset" (click)="clearFilters()">Clear filters</button>
+      </div>
+    }
+
+  </main>
+</div>
