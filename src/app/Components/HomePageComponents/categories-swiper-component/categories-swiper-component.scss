@@ -1,0 +1,329 @@
+.categories-slider {
+    margin-top: 50px;
+    padding-inline: 5px;
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 20px;
+
+            .title-bar {
+                width: 4px;
+                height: 22px;
+                background: #EC5E2A;
+                border-radius: 2px;
+                display: inline-block;
+            }
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        .view-all {
+            font-size: 13px;
+            color: #EC5E2A;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            font-family: Roboto Flex, sans-serif;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+
+    swiper-container {
+        margin-top: 30px;
+        background-color: #f5f5f5;
+        border-radius: 12px;
+        padding: 20px;
+        swiper-slide {
+            max-width: 170px;
+
+            .product-card {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                width: 170px;
+                cursor: pointer;
+                border-radius: 12px;
+                border: 0.5px solid #e5e5e5;
+                background-color: #fff;
+                overflow: hidden;
+                transition: border-color 0.15s, transform 0.15s;
+
+                &:hover {
+                    border-color: #EC5E2A;
+                    img {
+                        transform: scale(1.05);
+                    }
+                }
+
+                .display-error {
+                    position: absolute;
+                    inset: 0;
+                    backdrop-filter: blur(6px) brightness(75%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 12px;
+                    z-index: 2;
+
+                    p {
+                        font-family: Roboto Slab, serif;
+                        font-size: 18px;
+                        color: #fff;
+                        text-align: center;
+                        padding: 0 12px;
+                    }
+                }
+
+                .display-success {
+                    position: absolute;
+                    inset: 0;
+                    backdrop-filter: blur(6px) brightness(75%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 12px;
+                    z-index: 2;
+
+                    i {
+                        font-size: 32px;
+                        color: #fff;
+                    }
+                }
+
+                .image-container {
+                    position: relative;
+                    width: 100%;
+                    height: 150px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding-top: 12px;
+
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                        transition: transform 0.15s;
+                    }
+
+                    .badge-stock {
+                        position: absolute;
+                        top: 8px;
+                        left: 8px;
+                        font-size: 11px;
+                        font-weight: 500;
+                        padding: 3px 8px;
+                        border-radius: 20px;
+                        line-height: 1.4;
+
+                        &.in-stock {
+                            background-color: #fef3c7;
+                            color: #92400e;
+                        }
+
+                        &.out-of-stock {
+                            background-color: #fee2e2;
+                            color: #991b1b;
+                        }
+                    }
+
+                    .badge-label {
+                        position: absolute;
+                        top: 8px;
+                        right: 8px;
+                        background: #EC5E2A;
+                        color: #fff;
+                        font-size: 10px;
+                        font-weight: 500;
+                        padding: 2px 7px;
+                        border-radius: 20px;
+                        line-height: 1.4;
+                    }
+                    .badge-discount {
+                        position: absolute;
+                        bottom: -5px;
+                        right: 8px;
+                        background: #ef4444;
+                        color: #fff;
+                        font-size: 10px;
+                        font-weight: 600;
+                        padding: 3px 7px;
+                        border-radius: 20px;
+                        line-height: 1.4;
+                    }
+                }
+
+                .rating {
+                    display: flex;
+                    align-items: center;
+                    gap: 3px;
+                    font-size: 11px;
+                    color: #888;
+                    padding: 6px 10px 0;
+                    font-family: Roboto Flex, sans-serif;
+
+                    .stars {
+                        color: #f59e0b;
+                        font-size: 12px;
+                        letter-spacing: -1px;
+                    }
+                }
+
+                article {
+                    padding: 8px 10px 12px;
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+
+                    h2 {
+                        color: #3B3B3B;
+                        font-weight: 400;
+                        font-size: 12px;
+                        line-height: 1.4;
+                        max-height: 34px;
+                        overflow: hidden;
+                        font-family: Roboto Flex, sans-serif;
+                    }
+
+                    .price-row {
+                        display: flex;
+                        align-items: baseline;
+                        gap: 5px;
+
+                        .price-main {
+                            color: #EC5E2A;
+                            font-weight: 600;
+                            font-size: 16px;
+                            font-family: Roboto Flex, sans-serif;
+
+                            &.out-of-stock {
+                                color: #888;
+                            }
+                        }
+
+                        .price-old {
+                            color: #aaa;
+                            font-size: 11px;
+                            text-decoration: line-through;
+                            font-family: Roboto Flex, sans-serif;
+                        }
+                    }
+
+                    .warranty {
+                        display: flex;
+                        align-items: center;
+                        gap: 3px;
+                        font-size: 10px;
+                        color: #aaa;
+                        font-family: Roboto Flex, sans-serif;
+
+                        i {
+                            font-size: 11px;
+                        }
+                    }
+                }
+
+                .action-buttons {
+                    display: flex;
+                    gap: 6px;
+                    padding: 0 10px 10px;
+
+                    .details-button {
+                        width: 34px;
+                        height: 34px;
+                        border-radius: 6px;
+                        border: 1px solid #e5e5e5;
+                        background: #fff;
+                        color: #888;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        flex-shrink: 0;
+                        font-size: 15px;
+                        transition: background 0.12s, border-color 0.12s;
+
+                        &:hover {
+                            background: #f5f5f5;
+                            border-color: #ccc;
+                        }
+                    }
+
+                    .add-to-cart-button {
+                        flex: 1;
+                        height: 34px;
+                        border-radius: 6px;
+                        border: none;
+                        background: #EC5E2A;
+                        color: #fff;
+                        font-size: 12px;
+                        font-weight: 600;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 5px;
+                        cursor: pointer;
+                        transition: opacity 0.12s;
+                        font-family: Roboto Flex, sans-serif;
+
+                        &:hover {
+                            opacity: 0.88;
+                        }
+
+                        &:disabled {
+                            background: #f0f0f0;
+                            color: #aaa;
+                            cursor: not-allowed;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .nav-row {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 12px;
+
+        .nav-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 1px solid #e5e5e5;
+            background: #fff;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.12s;
+
+            &:hover {
+                background: #f5f5f5;
+            }
+        }
+    }
+}

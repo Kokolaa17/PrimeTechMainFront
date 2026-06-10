@@ -1,0 +1,38 @@
+<div class="home-page">
+    <div class="home-section-1">
+        <div class="categories">
+            @if (allCategories().length == 0) {
+                <img src="/Errors/images.png" alt="404 not found">
+            }
+            @else {
+                <ul>
+                @for (category of allCategories(); track $index) {
+                <li 
+                    style="text-transform: capitalize;" 
+                    class="brand">
+                    <img [src]="category.image" alt="{{category.name}} Image">
+                    <span>{{category.name}}</span>
+                </li>
+                }
+                </ul>
+            }
+        </div>
+        <div class="commerical-banner">
+            <img [src]="welcomeSectionImages[showingImageIndex()]" alt="Welcome Banner 1" class="banner-image"/>
+            <article>
+                <span>{{'homePage.Best Prices' | translate}}</span>
+                <h2 class="welcome-h2">{{'homePage.Incredible Prices on All Your Favorite Items' | translate}}</h2>
+                <p>{{'homePage.Get more for less price' | translate}}</p>
+                <button routerLink="/order">{{'homePage.Shop Now' | translate}} <i class="fa-solid fa-basket-shopping"></i></button>
+            </article>
+        </div>
+    </div>
+
+    @for (category of allCategories(); track category.id; let i = $index) {
+       <app-categories-swiper-component [categoryData]="category"></app-categories-swiper-component>
+       @if (i == 1) {
+        <app-commercial-component></app-commercial-component>
+       }
+    }
+</div>
+

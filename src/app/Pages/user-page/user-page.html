@@ -1,0 +1,428 @@
+<div class="dashboard-container">
+  <aside class="user-info">
+    <div class="profile-card">
+      <div class="profile-header">
+        <h3>
+          👤 {{ 'userPage.User Profile' | translate }}
+          <span (click)="logOut()">{{ 'userPage.Log Out' | translate }}</span>
+        </h3>
+      </div>
+
+      <div class="profile-body">
+        <img src="{{ userProfile()?.avatarUrl || 'https://cdn-icons-png.flaticon.com/512/709/709699.png' }}" class="profile-avatar" />
+        <div class="profile-stats">
+          <button (click)="openEditModal()" class="edit-btn">
+            ✏️ Edit
+          </button>
+          <div class="stat">
+            <span class="stat-label">{{ 'userPage.Name' | translate }}</span>
+            <span class="stat-value">{{ userProfile()?.name }} {{ userProfile()?.lastName }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">{{ 'userPage.Email' | translate }}</span>
+            <span class="stat-value">{{ userProfile()?.email }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">{{ 'userPage.Verified' | translate }}</span>
+            <span class="stat-value">
+              @if (userProfile()?.isVerified) {
+                <i class="fa-solid fa-check" style="color: rgb(99, 230, 190);"></i>
+              } @else {
+                <i class="fa-solid fa-xmark" style="color: red;"></i>
+              }
+            </span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">{{ 'userPage.Role' | translate }}</span>
+            <span class="stat-value">
+              {{ userProfile()?.role === 1 ? 'Admin' : userProfile()?.role === 2 ? 'SuperAdmin' : 'Customer' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  @if (userProfile()?.role !== 1) {
+       <div class="balance-card">
+        <div class="balance-header">
+          <span class="balance-icon">💳</span>
+          <h3>{{ 'userPage.My Wallet' | translate }}</h3>
+        </div>
+        <div class="balance-main">
+          <p class="balance-label">{{ 'userPage.Available balance' | translate }}</p>
+          <h2 class="balance-amount">${{ userProfile()?.balance }}</h2>
+        </div>
+        <div class="balance-stats">
+          <div class="stat">
+            <span class="stat-label">{{ 'userPage.Total Spent' | translate }}</span>
+            <span class="stat-value">${{ userProfile()?.totalSpent }}</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat">
+            <span class="stat-label">{{ 'userPage.Purchases' | translate }}</span>
+            <span class="stat-value">{{ userProfile()?.purchaseCount }}</span>
+          </div>
+        </div>
+        <button (click)="openDepositModal()" class="deposit-btn">
+          + {{ 'userPage.Add Funds' | translate }}
+        </button>
+    </div>
+  }
+
+  @if (userProfile()?.role == 1) {
+    <div class="admin-card notifications-card">
+      <div class="card-header">
+        <h3>🔔 {{"userPage.Notifications" | translate}}
+           @if (lowStockProducts().length > 0 || pendingOrders().length > 0) {
+            <span class="badge red-badge">{{lowStockProducts().length + pendingOrders().length}}</span>
+          }
+        </h3>  
+      </div>
+      
+      <div class="card-content scrollable-list">
+
+        <!-- Pending Orders -->
+        @for (order of pendingOrders(); track order.id) {
+          <div class="notification-item unread">
+            <div class="icon order-icon">
+              <i class="fas fa-shopping-bag"></i>
+            </div>
+
+            <div class="details">
+              <p>
+                <strong>{{"userPage.Order" | translate}} #{{ order.id }}</strong>
+                {{"userPage.Requires confirmation" | translate}}
+              </p>
+
+              <span class="time">
+                {{ order.createdAt | date:'short' }}
+              </span>
+
+              <div class="order-products">
+                @for (item of order.items; track item.productId) {
+                  <small>
+                    {{ item.productName }}
+                    (x{{ item.quantity }})
+                  </small>
+                }
+              </div>
+            </div>
+          </div>
+        }
+        <!-- Paid Orders -->
+          @for (order of paidOrders(); track order.id) {
+            <div class="notification-item info">
+              <div class="icon order-icon">
+                <i class="fas fa-box"></i>
+              </div>
+
+              <div class="details">
+                <p>
+                  <strong>{{"userPage.Order" | translate}} #{{ order.id }}</strong>
+                  {{"userPage.Awaiting shipment" | translate}}
+                </p>
+
+                <span class="time">
+                  {{ order.createdAt | date:'short' }}
+                </span>
+
+                <div class="order-products">
+                  @for (item of order.items; track item.productId) {
+                    <small>
+                      {{ item.productName }}
+                      (x{{ item.quantity }})
+                    </small>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Shipped Orders -->
+          @for (order of shippedOrders(); track order.id) {
+            <div class="notification-item success">
+              <div class="icon order-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+
+              <div class="details">
+                <p>
+                  <strong>{{"userPage.Order" | translate}} #{{ order.id }}</strong>
+                  {{"userPage.Awaiting delivery" | translate}}
+                </p>
+
+                <span class="time">
+                  {{ order.createdAt | date:'short' }}
+                </span>
+
+                <div class="order-products">
+                  @for (item of order.items; track item.productId) {
+                    <small>
+                      {{ item.productName }}
+                      (x{{ item.quantity }})
+                    </small>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+
+        <!-- Low Stock Products -->
+        @for (product of lowStockProducts(); track product.id) {
+          <div class="notification-item warning">
+            <div class="icon stock-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <div class="details">
+              <p>
+                <strong>{{ product.name }}</strong>
+                {{"userPage.Is running low on stock." | translate}}
+              </p>
+
+              <span class="time">
+                {{"userPage.Only" | translate}} {{ product.stock }} {{"userPage.Left" | translate}}
+              </span>
+            </div>
+          </div>
+        }
+
+      </div>
+    </div>
+  }
+    
+  </aside>
+
+  <main class="dashboard-main">
+    <section class="management-grid">
+      @if (userProfile()?.role === 1 || userProfile()?.role === 2) {
+        <div class="action-box" routerLink="/add-category">
+          <div class="action-box-header"><span>📂</span><h3>{{ 'userPage.Manage Categories' | translate }}</h3></div>
+          <div class="action-box-body">
+            <div class="add-icon"><i class="fa-solid fa-plus"></i><div class="hover-box"><i class="fa-solid fa-folder"></i></div></div>
+            <p class="add-label">{{ 'userPage.Click to manage categories' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="action-box" routerLink="/add-brand">
+          <div class="action-box-header"><span>🏷️</span><h3>{{ 'userPage.Manage Brands' | translate }}</h3></div>
+          <div class="action-box-body">
+            <div class="add-icon"><i class="fa-solid fa-plus"></i><div class="hover-box"><i class="fa-solid fa-tag"></i></div></div>
+            <p class="add-label">{{ 'userPage.Click to manage brands' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="action-box" routerLink="/add-product">
+          <div class="action-box-header"><span>📦</span><h3>{{ 'userPage.New Product' | translate }}</h3></div>
+          <div class="action-box-body">
+            <div class="add-icon"><i class="fa-solid fa-plus"></i><div class="hover-box"><i class="fa-solid fa-box"></i></div></div>
+            <p class="add-label">{{ 'userPage.Click to add new product' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="action-box" routerLink="/manage-users">
+          <div class="action-box-header"><span>👥</span><h3>{{ 'userPage.Users' | translate }}</h3></div>
+          <div class="action-box-body">
+            <div class="add-icon"><i class="fa-solid fa-users"></i><div class="hover-box"><i class="fa-solid fa-user"></i></div></div>
+            <p class="add-label">{{ 'userPage.Click here to manage users' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="action-box" routerLink="/manage-orders">
+          <div class="action-box-header"><span>📦</span><h3>{{ 'userPage.Orders' | translate }}</h3></div>
+          <div class="action-box-body">
+            <div class="add-icon"><i class="fa-solid fa-boxes-stacked"></i><div class="hover-box"><i class="fa-solid fa-list-check"></i></div></div>
+            <p class="add-label">{{ 'userPage.Click here to manage orders' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="action-box" routerLink="/analytics">
+          <div class="action-box-header"><span>📊</span><h3>{{ 'userPage.Analytics' | translate }}</h3></div>
+          <div class="action-box-body">
+            <div class="add-icon"><i class="fa-solid fa-chart-line"></i><div class="hover-box"><i class="fa-solid fa-pie-chart"></i></div></div>
+            <p class="add-label">{{ 'userPage.Click here to view sales analytics' | translate }}</p>
+          </div>
+        </div>
+      }
+
+      @if (userProfile()?.role == 0 || userProfile()?.role == 2) {
+       <div class="action-box" routerLink="/shipping-addresses">
+        <div class="action-box-header">
+          <span>📍</span>
+          <h3>{{ 'userPage.Shipping Adress' | translate }}</h3>
+        </div>
+
+        <div class="action-box-body">
+          <div class="add-icon">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <div class="hover-box">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+          </div>
+          <p class="add-label">{{ 'userPage.Click here to manage shipping address' | translate }}</p>
+        </div>     
+      </div>
+      <div class="action-box" [routerLink]="['/my-orders', userProfile()?.id]">
+        <div class="action-box-header">
+          <span>📍</span>
+          <h3>{{ 'userPage.Shipping Adress' | translate }}</h3>
+        </div>
+
+        <div class="action-box-body">
+          <div class="add-icon">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <div class="hover-box">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+          </div>
+          <p class="add-label">{{ 'userPage.Click here to manage shipping address' | translate }}</p>
+        </div>     
+      </div>
+    }
+    </section>
+  </main>
+</div>
+
+<!-- ── EDIT PROFILE MODAL ─────────────────────────────────── -->
+@if (isEditUserModalOpen()) {
+  <div class="modal-backdrop" (click)="onBackdropClick($event)">
+    <div class="edit-modal" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">✏️</span>
+          <span class="modal-title">{{ 'userPage.edit profile' | translate }}</span>
+        </div>
+        <button class="modal-close" (click)="closeEditModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-avatar-row">
+        <div class="modal-avatar-wrap">
+          <img
+            [src]="modalAvatarPreview() || userProfile()?.avatarUrl || 'https://cdn-icons-png.flaticon.com/512/709/709699.png'"
+            alt="avatar"
+          />
+        </div>
+      </div>
+
+      <form [formGroup]="editForm" (ngSubmit)="onModalSubmit()">
+        <div class="modal-fields">
+          <div class="field">
+            <input formControlName="firstName" type="text" id="m-firstName" placeholder="{{ 'userPage.first name' | translate }}" />
+            <label for="m-firstName">{{ 'userPage.first name' | translate }}</label>
+          </div>
+          <div class="field">
+            <input formControlName="lastName" type="text" id="m-lastName" placeholder="{{ 'userPage.last name' | translate }}" />
+            <label for="m-lastName">{{ 'userPage.last name' | translate }}</label>
+          </div>
+          <div class="field full">
+            <input formControlName="avatarUrl" type="text" id="m-avatarUrl" placeholder="{{ 'userPage.avatarUrl' | translate }}" />
+            <label for="m-avatarUrl">{{ 'userPage.avatarUrl' | translate }}</label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()">{{ 'userPage.cancel' | translate }}</button>
+          <button type="submit" class="btn-save">
+            <i class="fa-solid fa-floppy-disk"></i> {{ 'userPage.save changes' | translate }}
+          </button>
+        </div>
+      </form>
+
+      @if (saveStatus() === true) {
+        <div class="modal-toast success">
+          <i class="fa-solid fa-circle-check"></i> {{ 'userPage.messages.saveSuccess' | translate }}
+        </div>
+      } @else if (saveStatus() === false) {
+        <div class="modal-toast error">
+          <i class="fa-solid fa-circle-xmark"></i> {{ 'userPage.messages.saveFailed' | translate }}
+        </div>
+      }
+
+    </div>
+  </div>
+}
+
+@if (isDepositModalOpen()) {
+  <div class="modal-backdrop" (click)="closeDepositModal()">
+    <div class="edit-modal deposit-modal" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">💳</span>
+          <span class="modal-title">{{ 'userPage.Add Funds' | translate }}</span>
+        </div>
+        <button class="modal-close" (click)="closeDepositModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Current balance -->
+      <div class="deposit-balance-row">
+        <span class="deposit-balance-label">{{ 'userPage.Available Balance' | translate }}</span>
+        <span class="deposit-balance-amount">${{ userProfile()?.balance ?? 0 }}</span>
+      </div>
+
+      <!-- Quick amount buttons -->
+      <div class="deposit-quick-amounts">
+        @for (amt of quickAmounts; track amt) {
+          <button
+            class="quick-amt-btn"
+            [class.active]="depositAmount() === amt"
+            (click)="setDepositAmount(amt)"
+          >
+            ${{ amt }}
+          </button>
+        }
+      </div>
+
+      <!-- Custom amount input -->
+      <div class="deposit-field">
+        <label for="deposit-input">{{ 'userPage.Custom Amount' | translate }}</label>
+        <div class="deposit-input-wrap">
+          <span class="deposit-currency">$</span>
+          <input
+            id="deposit-input"
+            type="number"
+            min="1"
+            placeholder="0.00"
+            [value]="depositAmount() ?? ''"
+            (input)="onDepositInput($event)"
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 8px;">
+        <button type="button" class="btn-cancel" (click)="closeDepositModal()">
+          {{ 'userPage.cancel' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn-save"
+          [disabled]="!depositAmount() || depositAmount()! <= 0 || isDepositing()"
+          (click)="onDepositSubmit()"
+        >
+          @if (isDepositing()) {
+            <i class="fa-solid fa-spinner fa-spin"></i>
+          } @else {
+            <i class="fa-solid fa-plus"></i>
+          }
+          {{ 'userPage.Add Funds' | translate }}
+        </button>
+      </div>
+
+      @if (depositStatus() === true) {
+        <div class="modal-toast success">
+          <i class="fa-solid fa-circle-check"></i> {{ 'userPage.messages.depositSuccess' | translate }}
+        </div>
+      } @else if (depositStatus() === false) {
+        <div class="modal-toast error">
+          <i class="fa-solid fa-circle-xmark"></i> {{ 'userPage.messages.depositFailed' | translate }}
+        </div>
+      }
+
+    </div>
+  </div>
+}

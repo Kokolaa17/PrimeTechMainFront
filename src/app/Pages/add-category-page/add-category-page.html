@@ -1,0 +1,100 @@
+<section class="add-new-category-section">
+  <div class="wrapper">
+    <h1>{{ 'addCategory.title' | translate }}
+      <span>{{ 'addCategory.titleSpan' | translate }}</span>
+    </h1>
+    <p class="subtitle">{{ 'addCategory.subtitle' | translate }}</p>
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" id="categoryForm">
+      <div class="form-grid">
+        <div class="field full">
+          <input formControlName="name" type="text" id="name" [placeholder]="'addCategory.namePlaceholder' | translate" />
+          <label for="name">{{ 'addCategory.nameLabel' | translate }}</label>
+        </div>
+        <div class="field full">
+          <div class="image-url-row">
+            <input formControlName="image" type="url" id="image" [placeholder]="'addCategory.imagePlaceholder' | translate" />
+            <div class="img-thumb"> @if (imagePreview()) { <img [src]="imagePreview()" alt="preview" (error)="onImageError()" /> } @else { <i class="fa-regular fa-image"></i> } </div>
+          </div>
+          <label for="image">{{ 'addCategory.imageLabel' | translate }}</label>
+        </div>
+        <div class="section-label">{{ 'addCategory.parentSection' | translate }}</div>
+        <div class="toggle-row">
+          <label class="toggle-switch" for="hasParent">
+            <input type="checkbox" id="hasParent" [checked]="hasParent()" (change)="toggleParent($event)" />
+            <span class="track"></span>
+            <span class="thumb"></span>
+          </label>
+          <span class="toggle-label" (click)="toggleParentLabel()">{{ 'addCategory.hasParent' | translate }}</span>
+        </div> @if (hasParent()) { <div class="field full parent-animate">
+          <select formControlName="parentCategoryId" id="parentCategoryId">
+            <option value="" disabled selected>{{ 'addCategory.selectParent' | translate }}</option> @for (cat of categories(); track cat.id) { <option [value]="cat.id">{{ cat.name }}</option> }
+          </select>
+          <label for="parentCategoryId">{{ 'addCategory.parentLabel' | translate }}</label>
+        </div> } <div class="submit-row">
+          <button type="submit">
+            {{
+              selectedCategoryId !== null
+                ? ('addCategory.update' | translate)
+                : ('addCategory.submit' | translate)
+            }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div> @if (categoryAddStatus() === true) { <div class="toast success">
+    <i class="fa-solid fa-circle-check"></i>
+    {{ categoryAddMessage() | translate }}
+  </div> } @else if (categoryAddStatus() === false) { <div class="toast error">
+    <i class="fa-solid fa-circle-xmark"></i>
+    {{ categoryAddMessage() | translate }}
+  </div> }
+  <div class="categories-list-wrapper">
+  <div class="list-header">
+    <h2>{{ 'addCategory.listTitle' | translate }} <span>({{ categories().length }})</span></h2>
+  </div>
+
+  @if (categories().length === 0) {
+    <div class="empty-state">
+      <i class="fa-regular fa-folder-open"></i>
+      <p>{{ 'addCategory.emptyList' | translate }}</p>
+    </div>
+  }
+
+  <div class="category-grid">
+    @for (cat of categories(); track cat.id) {
+      <div class="category-card">
+
+        <div class="card-icon">
+          @if (cat.image) {
+            <img [src]="cat.image" [alt]="cat.name" (error)="onCardImageError($event)" />
+          } @else {
+            <i class="fa-regular fa-image"></i>
+          }
+        </div>
+
+        <div class="card-info">
+          <span class="card-name">{{ cat.name }}</span>
+          @if (cat.parentCategoryId) {
+            <span class="card-parent">
+              <i class="fa-solid fa-sitemap"></i>
+              {{ getParentName(cat.parentCategoryId) }}
+            </span>
+          } @else {
+            <span class="card-badge">{{ 'addCategory.rootBadge' | translate }}</span>
+          }
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-edit" (click)="onEdit(cat)" [title]="'addCategory.edit' | translate">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="btn-delete" (click)="onDelete(cat.id)" [title]="'addCategory.delete' | translate">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+
+      </div>
+    }
+  </div>
+</div>
+</section>

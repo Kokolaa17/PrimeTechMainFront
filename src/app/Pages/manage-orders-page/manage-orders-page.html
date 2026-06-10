@@ -1,0 +1,172 @@
+<div class="orders-container">
+
+  <!-- ══ HEADER ═══════════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1><i class="fa-solid fa-boxes-stacked"></i> {{ 'orders.title' | translate }}</h1>
+      <span class="total-badge">{{ totalCount() }} {{ 'orders.ordersCount' | translate }}</span>
+    </div>
+  </div>
+
+  <!-- ══ STATUS FILTER TABS ════════════════════════════════════ -->
+  <div class="filter-tabs">
+    <button
+      class="tab-btn"
+      [class.active]="activeFilter() === null"
+      (click)="setFilter(null)">
+      <i class="fa-solid fa-list"></i> {{ 'orders.filters.all' | translate }}
+    </button>
+    @for (s of statusList; track s.value) {
+      <button
+        class="tab-btn"
+        [class.active]="activeFilter() === s.value"
+        (click)="setFilter(s.value)">
+        <span class="tab-dot" [ngClass]="s.dotClass"></span>
+        {{ s.label }}
+      </button>
+    }
+  </div>
+
+  <!-- ══ LOADING ═══════════════════════════════════════════════ -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <span>{{ 'orders.loading' | translate }}</span>
+    </div>
+  }
+
+  <!-- ══ ORDERS TABLE ══════════════════════════════════════════ -->
+  @if (!isLoading()) {
+    @if (orders().length === 0) {
+      <div class="empty-state">
+        <i class="fa-solid fa-inbox"></i>
+        <p>{{ 'orders.empty' | translate }}</p>
+      </div>
+    } @else {
+      <div class="table-wrap">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>{{ 'orders.table.id' | translate }}</th>
+              <th>{{ 'orders.table.customer' | translate }}</th>
+              <th>{{ 'orders.table.date' | translate }}</th>
+              <th>{{ 'orders.table.items' | translate }}</th>
+              <th>{{ 'orders.table.payment' | translate }}</th>
+              <th>{{ 'orders.table.total' | translate }}</th>
+              <th>{{ 'orders.table.status' | translate }}</th>
+              <th>{{ 'orders.table.actions' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of orders(); track order.id) {
+              <tr class="order-row" [class.expanded]="expandedId() === order.id">
+
+                <!-- ID -->
+                <td class="col-id">
+                  <span class="order-id-badge">#{{ order.id }}</span>
+                </td>
+
+                <!-- Customer -->
+                <td class="col-customer">
+                  <div class="customer-info">
+                    <span class="customer-name">{{ order.userFullName }}</span>
+                    <span class="customer-id">{{ 'orders.uid' | translate }}: {{ order.userId }}</span>
+                  </div>
+                </td>
+
+                <!-- Date -->
+                <td class="col-date">
+                  {{ order.createdAt | date: 'MMM d, y' }}<br/>
+                  <span class="time">{{ order.createdAt | date: 'h:mm a' }}</span>
+                </td>
+
+                <!-- Items -->
+                <td class="col-items">
+                  <span class="items-count">
+                    <i class="fa-solid fa-box"></i>
+                    {{ order.itemCount ?? order.items?.length ?? '—' }}
+                  </span>
+                </td>
+
+                <!-- Payment -->
+                <td class="col-payment">
+                  <span class="payment-chip" [ngClass]="getPaymentClass(order.paymentMethod)">
+                    <i [class]="getPaymentIcon(order.paymentMethod)"></i>
+                    {{ getPaymentLabel(order.paymentMethod) }}
+                  </span>
+                </td>
+
+                <!-- Total -->
+                <td class="col-total">
+                  <span class="total-amount">${{ order.totalAmount | number: '1.0-0' }}</span>
+                </td>
+
+                <!-- Status -->
+                <td class="col-status">
+                  <span class="status-chip" [ngClass]="getStatusClass(order.status)">
+                    {{ getStatusLabel(order.status) }}
+                  </span>
+                </td>
+
+                <!-- Actions -->
+                <td class="col-actions">
+                  <div class="action-btns">
+
+                    @if (order.status === 0 && order.paymentMethod === 1) {
+                      <!-- PENDING + CASH → Mark as Paid -->
+                      <button class="action-btn pay" (click)="markAsPaid(order.id)" [title]="'orders.actions.markAsPaid' | translate">
+                        <i class="fa-solid fa-circle-check"></i>
+                      </button>
+                    }
+
+                    @if (order.status === 1) {
+                      <!-- PAID → Ship -->
+                      <button class="action-btn ship" (click)="markAsShipped(order.id)" [title]="'orders.actions.markAsShipped' | translate">
+                        <i class="fa-solid fa-truck"></i>
+                      </button>
+                    }
+
+                    @if (order.status === 2) {
+                      <!-- SHIPPED → Deliver -->
+                      <button class="action-btn deliver" (click)="markAsDelivered(order.id)" [title]="'orders.actions.markAsDelivered' | translate">
+                        <i class="fa-solid fa-house-circle-check"></i>
+                      </button>
+                    }
+
+                    @if (order.status !== 2 && order.status !== 3 && order.status !== 4) {
+                      <!-- Cancel (not SHIPPED/DELIVERED/CANCELED) -->
+                      <button class="action-btn cancel" (click)="cancelOrder(order.id)" [title]="'orders.actions.cancelOrder' | translate">
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    }
+
+                  </div>
+                </td>
+
+              </tr>
+
+              <!-- Expandable items row (if items present from status filter) -->
+              @if (order.items?.length) {
+                <tr class="items-row">
+                  <td colspan="8">
+                    <div class="items-list">
+                      @for (item of order.items; track item.productId) {
+                        <div class="item-pill">
+                          <span class="item-name">{{ item.productName }}</span>
+                          <span class="item-qty">×{{ item.quantity }}</span>
+                          <span class="item-price">${{ item.subTotal | number }}</span>
+                        </div>
+                      }
+                    </div>
+                  </td>
+                </tr>
+              }
+
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+</div>

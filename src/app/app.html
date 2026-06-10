@@ -1,0 +1,7 @@
+<app-nav-bar-component></app-nav-bar-component>
+<router-outlet></router-outlet>
+<app-footer-component></app-footer-component>
+
+@if (isApiCallGoing()) {
+    <app-loading-screen-component></app-loading-screen-component>
+}

@@ -1,0 +1,81 @@
+<section class="add-new-brand-section">
+  <div class="wrapper">
+    <h1>
+      {{ 'addBrand.title' | translate }}
+      <span>{{ 'addBrand.titleSpan' | translate }}</span>
+    </h1>
+    <p class="subtitle">{{ 'addBrand.subtitle' | translate }}</p>
+
+    <form [formGroup]="brandForm" (ngSubmit)="onSubmit()" id="brandForm">
+      <div class="form-grid">
+        
+        <div class="field full">
+          <input formControlName="name" type="text" id="name" [placeholder]="'addBrand.namePlaceholder' | translate" />
+          <label for="name">{{ 'addBrand.nameLabel' | translate }}</label>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit">
+            {{
+              selectedBrandId !== null
+                ? ('addBrand.update' | translate)
+                : ('addBrand.submit' | translate)
+            }}
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  @if (brandAddStatus() === true) {
+    <div class="toast success">
+      <i class="fa-solid fa-circle-check"></i>
+      {{ brandAddMessage() | translate }}
+    </div>
+  } @else if (brandAddStatus() === false) {
+    <div class="toast error">
+      <i class="fa-solid fa-circle-xmark"></i>
+      {{ brandAddMessage() | translate }}
+    </div>
+  }
+
+  <div class="brands-list-wrapper">
+    <div class="list-header">
+      <h2>{{ 'addBrand.listTitle' | translate }} <span>({{ brands().length }})</span></h2>
+    </div>
+
+    @if (brands().length === 0) {
+      <div class="empty-state">
+        <i class="fa-regular fa-folder-open"></i>
+        <p>{{ 'addBrand.emptyList' | translate }}</p>
+      </div>
+    }
+
+    <div class="brand-grid">
+      @for (brand of brands(); track brand.id) {
+        <div class="brand-card">
+
+          <div class="card-icon">
+            <i class="fa-solid fa-copyright"></i>
+          </div>
+
+          <div class="card-info">
+            <span class="card-name">{{ brand.name }}</span>
+            <span class="card-badge">{{ 'addBrand.brandBadge' | translate }}</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn-edit" (click)="onEdit(brand)" [title]="'addBrand.edit' | translate">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="btn-delete" (click)="onDelete(brand.id)" [title]="'addBrand.delete' | translate">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+
+        </div>
+      }
+    </div>
+  </div>
+</section>

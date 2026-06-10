@@ -1,0 +1,131 @@
+<div class="user-view-container">
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <span>{{ 'viewUserDetailsPage.loading' | translate }}</span>
+    </div>
+  }
+
+  @if (!isLoading() && user()) {
+    <div class="profile-layout">
+
+      <!-- ══ LEFT SIDEBAR ════════════════════════════════════════ -->
+      <aside class="profile-aside">
+
+        <!-- Avatar + identity -->
+        <div class="aside-card identity-card">
+          <div class="avatar-wrap">
+            <img
+              [src]="user()?.avatarUrl || 'https://cdn-icons-png.flaticon.com/512/709/709699.png'"
+              alt="avatar"
+              class="avatar-img"
+            />
+            <span class="role-badge" [className]="roleBadgeClass()">
+              {{ roleLabel() }}
+            </span>
+          </div>
+          <h2 class="user-name">{{ user()?.name }} {{ user()?.lastName }}</h2>
+          <p class="user-email">
+            <i class="fa-solid fa-envelope"></i>
+            {{ user()?.email }}
+          </p>
+          <div class="verified-row">
+            @if (user()?.isVerified) {
+              <span class="verified-chip verified">
+                <i class="fa-solid fa-circle-check"></i>
+                {{ 'viewUserDetailsPage.verified' | translate }}
+              </span>
+            } @else {
+              <span class="verified-chip unverified">
+                <i class="fa-solid fa-circle-xmark"></i>
+                {{ 'viewUserDetailsPage.notVerified' | translate }}
+              </span>
+            }
+          </div>
+        </div>
+
+        <!-- Wallet -->
+        <div class="aside-card wallet-card">
+          <div class="card-heading">
+            <i class="fa-solid fa-wallet"></i>
+            <h3>{{ 'userPage.My Wallet' | translate }}</h3>
+          </div>
+          <div class="balance-big">
+            <span class="balance-label">{{ 'userPage.Available balance' | translate }}</span>
+            <span class="balance-amount">${{ user()?.balance | number: '1.2-2' }}</span>
+          </div>
+          <div class="wallet-stats">
+            <div class="wstat">
+              <span class="wstat-label">{{ 'userPage.Total Spent' | translate }}</span>
+              <span class="wstat-value">${{ user()?.totalSpent | number: '1.2-2' }}</span>
+            </div>
+            <div class="wdivider"></div>
+            <div class="wstat">
+              <span class="wstat-label">{{ 'userPage.Purchases' | translate }}</span>
+              <span class="wstat-value">{{ user()?.purchaseCount }}</span>
+            </div>
+            <div class="wdivider"></div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+      <main class="profile-main">
+
+        <!-- Orders -->
+        @if (user()?.orders?.length) {
+          <section class="orders-section">
+            <div class="section-header">
+              <h2><span class="icon">🧾</span> {{ 'viewUserDetailsPage.Orders' | translate }}</h2>
+              <span class="count-badge">{{ user()?.orders?.length }}</span>
+            </div>
+            <div class="orders-grid">
+              @for (order of user()?.orders; track order.id) {
+                <div class="order-card">
+                  <div class="order-top">
+                    <span class="order-id">#{{ order.id }}</span>
+                    <span class="order-status" [ngClass]="getStatusClass(order.status)">
+                      {{ getStatusLabel(order.status) }}
+                    </span>
+                  </div>
+                  <div class="order-date">
+                    <i class="fa-regular fa-calendar"></i>
+                    {{ order.createdAt | date: 'MMM d, y · h:mm a' }}
+                  </div>
+                  <div class="order-payment">
+                    <i [class]="getPaymentIcon(order.paymentMethod)"></i>
+                    {{ getPaymentLabel(order.paymentMethod) }}
+                  </div>
+                  <div class="order-items">
+                    @for (item of order.items; track item.productId) {
+                      <div class="item-row">
+                        <span class="item-name">{{ item.productName }}</span>
+                        <div class="item-meta">
+                          <span class="qty">×{{ item.quantity }}</span>
+                          <span class="unit">${{ item.unitPrice | number }}</span>
+                          <span class="subtotal">${{ item.subTotal | number }}</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                  <div class="order-footer">
+                    <span>{{ 'viewUserDetailsPage.total' | translate }}</span>
+                    <span>${{ order.totalAmount | number }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </section>
+        } @else {
+          <div class="empty-orders">
+            <i class="fa-solid fa-box-open"></i>
+            <p>{{ 'viewUserDetailsPage.No orders yet' | translate }}</p>
+          </div>
+        }
+
+      </main>
+    </div>
+  }
+</div>

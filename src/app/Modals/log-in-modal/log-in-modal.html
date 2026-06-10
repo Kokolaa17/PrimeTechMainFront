@@ -1,0 +1,32 @@
+<section>
+  <div class="login-form" id="loginForm">
+    <button (click)="closeLogIn()" class="closeButton">
+      <i class="fa-solid fa-x"></i>
+    </button>
+    <h2>{{ 'nav.log in' | translate }}</h2>
+    <form [formGroup]="logInForm" (submit)="logIn()">
+      <div class="inputs">
+        <input id="email2" type="email" placeholder="+" formControlName="email">
+        <label for="email2">
+          <i class="fa-solid fa-envelope"></i> {{ 'logIn.Email' | translate }} </label>
+      </div>
+      <div class="inputs">
+        <input id="password2" [type]="showPaassword() ? 'text' : 'password'" placeholder="+" formControlName="password">
+        <label for="password2">
+          <i class="fa-solid fa-lock"></i> {{ 'logIn.Password' | translate }} </label>
+        <span [style.color]="showPaassword() ? 'red' : 'black'" (click)="toggleShowPassword()">
+          <i class="fa-solid fa-eye"></i>
+        </span>
+      </div>
+      <div>
+        <button [style.background-color]="logInForm.valid ? '#ec5e2a' : '#ccc'" [disabled]="logInForm.invalid" type="submit" class="log-in-button">{{ 'nav.log in' | translate }}</button>
+        <p>{{ 'logIn.don\'t have an account?' | translate }} <span (click)="goToRegister()"> {{ 'logIn.register' | translate }} </span>
+        </p>
+      </div>
+    </form>
+  </div> @if (isLogInSuccessful() === true) { <div class="success-message">
+    <p>{{ logInMessage() | translate }}</p>
+  </div> } @else if (isLogInSuccessful() === false) { <div class="error-message">
+    <p>{{ logInMessage() | translate }}</p>
+  </div> }
+</section>

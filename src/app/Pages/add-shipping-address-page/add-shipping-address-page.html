@@ -1,0 +1,88 @@
+<section class="add-address-section">
+  <div class="wrapper">
+    <h1>Shipping <span>Addresses</span></h1>
+    <p class="subtitle">Manage your delivery addresses</p>
+
+    <form [formGroup]="addressForm" (ngSubmit)="onSubmit()" id="addressForm">
+      <div class="form-grid">
+
+        <div class="field">
+          <input formControlName="street" type="text" id="street" placeholder="e.g. 123 Main Street" />
+          <label for="street">Street</label>
+        </div>
+
+        <div class="field">
+          <input formControlName="city" type="text" id="city" placeholder="e.g. Tbilisi" />
+          <label for="city">City</label>
+        </div>
+
+        <div class="field">
+          <input formControlName="country" type="text" id="country" placeholder="e.g. Georgia" />
+          <label for="country">Country</label>
+        </div>
+
+        <div class="field">
+          <input formControlName="zipCode" type="text" id="zipCode" placeholder="e.g. 0100" />
+          <label for="zipCode">Zip Code</label>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit">
+            <i class="fa-solid fa-plus"></i> Add Address
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  @if (addStatus() === true) {
+    <div class="toast success">
+      <i class="fa-solid fa-circle-check"></i>
+      Address added successfully!
+    </div>
+  } @else if (addStatus() === false) {
+    <div class="toast error">
+      <i class="fa-solid fa-circle-xmark"></i>
+      {{ addMessage() }}
+    </div>
+  }
+
+  <!-- Address List -->
+  <div class="addresses-list-wrapper">
+    <div class="list-header">
+      <h2>Saved Addresses <span>({{ addresses().length }})</span></h2>
+    </div>
+
+    @if (addresses().length === 0) {
+      <div class="empty-state">
+        <i class="fa-solid fa-location-dot"></i>
+        <p>No addresses saved yet.</p>
+      </div>
+    }
+
+    <div class="address-grid">
+      @for (addr of addresses(); track addr.id) {
+        <div class="address-card">
+          <div class="card-icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+
+          <div class="card-info">
+            <span class="card-street">{{ addr.street }}</span>
+            <span class="card-sub">{{ addr.city }}, {{ addr.country }}</span>
+            <span class="card-zip">
+              <i class="fa-solid fa-envelope"></i> {{ addr.zipCode }}
+            </span>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn-delete" (click)="onDelete(addr.id)" title="Delete">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

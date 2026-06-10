@@ -1,0 +1,325 @@
+{
+    "nav": {
+        "top commercial": "უფასო მიწოდება მსოფლიოს მასშტაბით",
+        "cart": "კალათა",
+        "log in": "შესვლა",
+        "user": "მომხმარებელი",
+        "search": "ძებნა...",
+        "total": "სულ"
+    },
+    "cart": {
+        "title": "კალათა",
+        "loginRequired": "კალათის სანახავად გთხოვთ გაიაროთ ავტორიზაცია.",
+        "empty": "თქვენი კალათა ცარიელია.",
+        "subtotal": "ჯამი",
+        "clear": "გასუფთავება",
+        "checkout": "შეკვეთა",
+        "checkoutTitle": "შეკვეთის გაფორმება",
+        "shippingAddress": "მიწოდების მისამართი",
+        "noAddress": "მისამართი ვერ მოიძებნა.",
+        "noAddressHint": "გთხოვთ პროფილში დაამატოთ მიწოდების მისამართი.",
+        "addAddress": "დამატება",
+        "paymentMethod": "გადახდის მეთოდი",
+        "cashOnDelivery": "მიწოდებისას გადახდა",
+        "walletBalance": "საფულის ბალანსი",
+        "insufficientBalance": "არასაკმარისი ბალანსი. საჭიროა",
+        "insufficientBalanceNeed": "თქვენ კი გაქვთ",
+        "items": "პროდუქტი",
+        "total": "სულ",
+        "placeOrder": "შეკვეთის გაფორმება",
+        "placingOrder": "მიმდინარეობს შეკვეთა...",
+        "messages": {
+            "orderSuccess": "შეკვეთა წარმატებით გაფორმდა!",
+            "orderError": "შეკვეთის გაფორმება ვერ მოხერხდა. გთხოვთ სცადოთ ხელახლა."
+        }
+    },
+    "logIn": {
+        "Email": "ელ.ფოსტა",
+        "Password": "პაროლი",
+        "don't have an account?": "არ გაქვთ ანგარიში?",
+        "register": "რეგისტრაცია",
+        "messages": {
+            "success": "ავტორიზაცია წარმატებით დასრულდა!",
+            "unverified": "ელ-ფოსტა არ არის ვერიფიცირებული.",
+            "invalid": "მონაცემები არასწორია.",
+            "genericError": "სისტემური შეცდომა შესვლისას."
+        }
+    },
+    "verifyUser": {
+        "Verify User": "მომხმარებლის ვერიფიკაცია",
+        "Verification Code": "ვერიფიკაციის კოდი",
+        "verify": "ვერიფიკაცია",
+        "messages": {
+            "success": "ვერიფიკაცია წარმატებით დასრულდა! გადავდივართ ავტორიზაციაზე...",
+            "wrongCode": "ვერიფიკაციის კოდი არასწორია. გთხოვთ გადაამოწმოთ.",
+            "genericError": "ვერიფიკაციისას დაფიქსირდა შეცდომა. გთხოვთ სცადოთ თავიდან."
+        }
+    },
+    "register": {
+        "Register": "რეგისტრაცია",
+        "Name": "სახელი",
+        "Last Name": "გვარი",
+        "Email": "ელ.ფოსტა",
+        "Password": "პაროლი",
+        "already have an account?": "უკვე გაქვთ ანგარიში?",
+        "log in": "შესვლა",
+        "messages": {
+            "success": "რეგისტრაცია წარმატებით დასრულდა! ვერიფიკაციის კოდი გაიგზავნა თქვენს ელ-ფოსტაზე.",
+            "emailExists": "ელ-ფოსტა უკვე გამოყენებულია.",
+            "genericError": "სისტემური შეცდომა რეგისტრაციისას."
+        }
+    },
+    "userPage": {
+        "User Profile": "მომხმარებლის პროფილი",
+        "Log Out": "გამოსვლა",
+        "Name": "სახელი",
+        "Email": "ელ.ფოსტა",
+        "Verified": "ვერიფიცირებული",
+        "Role": "როლი",
+        "My Wallet": "ჩემი საფულე",
+        "Avaiable Balance": "ხელმისაწვდომი ბალანსი",
+        "Total Spent": "სულ დახარჯული",
+        "Purchases": "შეძენები",
+        "Add Funds": "ბალანსის შევსება",
+        "New Product": "პროდუქტები",
+        "Click to add new product": "დააჭირეთ პროდუქტების მართვისთვის",
+        "Manage Categories": "კატეგორიები",
+        "Click to manage categories": "დააჭირეთ კატეგორიების მართვისთვის",
+        "Users": "მომხმარებლები",
+        "Click here to manage users": "დააჭირეთ მომხმარებლების მართვისთვის",
+        "Manage Brands": "ბრენდები",
+        "Click to manage brands": "დააჭირეთ ბრენდების მართვისთვის",
+        "Orders": "შეკვეთები",
+        "Click here to manage orders": "დააჭირეთ შეკვეთების მართვისთვის",
+        "Analytics": "ანალიტიკა",
+        "Click here to view sales analytics": "დააჭირეთ გაყიდვების ანალიტიკისთვის",
+        "Available balance": "ხელმისაწვდომი ბალანსი",
+        "edit profile": "პროფილის რედაქტირება",
+        "first name": "სახელი",
+        "last name": "გვარი",
+        "avatarUrl": "ავატარის URL",
+        "cancel": "გაუქმება",
+        "save changes": "ცვლილებების შენახვა",
+        "Custom Amount": "სასურველი თანხა",
+        "Shipping Adress": "მიწოდების მისამართი",
+        "Click here to manage shipping address": "დააჭირეთ აქ მიწოდების მისამართების სამართავად",
+        "Available Balance": "ხელმისაწვდომი ბალანსი",
+        "Notifications" : "შეტყობინებები",
+        "Order" : "შეკვეთა",
+        "Awaiting shipment" : "ელოდება გაგზავნას",
+        "Awaiting delivery" : "ელოდება მიწოდებას",
+        "messages": {
+            "saveSuccess": "პროფილი განახლდა!",
+            "saveFailed": "პროფილის განახლება ვერ მოხერხდა. გთხოვთ სცადოთ ხელახლა.",
+            "depositSuccess": "ბალანსი წარმატებით შეივსო.",
+            "depositFailed": "ბალანსის შევსება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
+        }
+    },
+    "addCategory": {
+        "title": "დაამატე",
+        "titleSpan": "კატეგორია",
+        "subtitle": "შეავსეთ ქვემოთ მოცემული დეტალები ახალი კატეგორიის დასამატებლად.",
+        "nameLabel": "კატეგორიის სახელი",
+        "namePlaceholder": "მაგ. მობილური ტელეფონი",
+        "imageLabel": "სურათის URL",
+        "imagePlaceholder": "https://example.com/icon.svg",
+        "parentSection": "მშობელი კატეგორია",
+        "hasParent": "აქვს მშობელი კატეგორია",
+        "selectParent": "აირჩიეთ მშობელი კატეგორია",
+        "parentLabel": "მშობელი კატეგორია",
+        "submit": "კატეგორიის დამატება",
+        "update": "კატეგორიის განახლება",
+        "messages": {
+            "successTitle": "წარმატება!",
+            "errorTitle": "შეცდომა!",
+            "success": "კატეგორია წარმატებით დაემატა!",
+            "genericError": "დაფიქსირდა შეცდომა. სცადეთ თავიდან.",
+            "alreadyExists": "ამ სახელით კატეგორია უკვე არსებობს!",
+            "updateSuccess": "კატეგორია წარმატებით განახლდა!",
+            "updateError": "კატეგორიის განახლება ვერ მოხერხდა!"
+        },
+        "listTitle": "ყველა კატეგორია",
+        "emptyList": "კატეგორიების სია ცარიელია.",
+        "rootBadge": "Root",
+        "edit": "განახლება",
+        "delete": "წაშლა"
+    },
+    "addBrand": {
+        "title": "ბრენდის ",
+        "titleSpan": "დამატება",
+        "subtitle": "შექმენით და მართეთ თქვენი პროდუქტის ბრენდები",
+        "nameLabel": "ბრენდის სახელი",
+        "namePlaceholder": "ჩაწერეთ ბრენდის სახელი...",
+        "submit": "ბრენდის დამატება",
+        "update": "ბრენდის განახლება",
+        "emptyList": "ბრენდების სია ცარიელია",
+        "listTitle": "რეგისტრირებული ბრენდები",
+        "brandBadge": "ბრენდი",
+        "messages": {
+            "addSuccess": "ბრენდი წარმატებით დაემატა!",
+            "addError": "ბრენდის დამატება ვერ მოხერხდა. გთხოვთ სცადოთ ხელახლა.",
+            "updateSuccess": "ბრენდი წარმატებით განახლდა!",
+            "updateError": "ბრენდის განახლება ვერ მოხერხდა. გთხოვთ სცადოთ ხელახლა."
+        }
+    },
+    "AddProductPage": {
+        "Add Product": "პროდუქტის დამატება",
+        "Fill in the details below to list a new product.": "შეიყვანეთ დეტალები ქვემოთ ახალი პროდუქტის ჩასასწორებლად.",
+        "Product Name": "პროდუქტის სახელი",
+        "Category": "კატეგორია",
+        "Select category": "შეარჩიეთ კატეგორია",
+        "Brand": "მწარმოებელი",
+        "Select brand": "შეარჩიეთ ბრენდი",
+        "Description": "აღწერა",
+        "Describe the product": "აღწერეთ პროდუქტი...",
+        "Pricing & Stock": "ფასი & რაოდენობა",
+        "Price": "ფასი",
+        "Stock": "რაოდენობა",
+        "Warranty (months)": "გარანტია (თვე)",
+        "Images": "სურათები",
+        "Images (min. 3)": "სურათები (მინ. 3)",
+        "Paste URL and press Enter…": "ჩასვით URL და დაჭერეთ Enter…",
+        "messages": {
+            "success": "პროდუქტი წარმატებით დაემატა!",
+            "error": "პროდუქტის დამატება ვერ მოხერხდა!",
+            "alreadyExists": "პროდუქტი ამ სახელით უკვე არსებობს!",
+            "imagesRequired": "სურათების ველი არ უნდა იყოს ცარიელი, მინიმუმ 3 სურათია საჭირო!"
+        },
+        "Products List": "პროდუქტების სია",
+        "No products found": "პროდუქტები ვერ მოიძებნა",
+        "Update Product": "პროდუქტის განახლება",
+        "Stock is at danger zone": "რაოდენობა საშიშ ზონაშია!"
+    },
+    "manageUsers": {
+        "title": "მომხმარებლების მართვა",
+        "subtitle": "გამოიყენეთ ქვემოთ მოცემული ფორმა მომხმარებლის მონაცემების შესაცვლელად.",
+        "name": "სახელი",
+        "surname": "გვარი",
+        "email": "ელ.ფოსტა",
+        "avatarUrl": "ავატარის URL",
+        "role": "როლი",
+        "user": "მომხმარებელი",
+        "admin": "ადმინისტრატორი",
+        "manager": "მენეჯერი",
+        "updateUser": "მომხმარებლის განახლება",
+        "verified": "ვერიფიცირებული",
+        "balance": "ბალანსი",
+        "totalSpent": "სულ დახარჯული",
+        "purchases": "შეძენები",
+        "orders": "შეკვეთები",
+        "Users List": "მომხმარებლების სია",
+        "messages": {
+            "updateSuccess": "მომხმარებელი წარმატებით განახლდა!",
+            "updateError": "მომხმარებლის განახლება ვერ მოხერხდა.",
+            "deleteSuccess": "მომხმარებელი წარმატებით წაიშალა!",
+            "deleteError": "მომხმარებლის წაშლა ვერ მოხერხდა."
+        }
+    },
+    "editUserInfo": {
+        "title": "პროფილის რედაქტირება",
+        "subtitle": "განაახლეთ თქვენი პირადი მონაცემები",
+        "firstName": "სახელი",
+        "lastName": "გვარი",
+        "avatarUrl": "ავატარის URL",
+        "avatarUrlPlaceholder": "https://…",
+        "profilePhoto": "პროფილის ფოტო",
+        "changePhoto": "ფოტოს შეცვლა",
+        "removePhoto": "წაშლა",
+        "photoHint": "JPG, PNG ან WebP · მაქს. 2 MB",
+        "saveChanges": "ცვლილებების შენახვა",
+        "cancel": "გაუქმება",
+        "messages": {
+            "saveSuccess": "პროფილი წარმატებით განახლდა.",
+            "saveFailed": "დაფიქსირდა შეცდომა. გთხოვთ სცადოთ ხელახლა."
+        }
+    },
+    "viewUserDetailsPage": {
+        "Back to users": "მომხმარებლებთან დაბრუნება",
+        "Discount Progress": "ფასდაკლების პროგრესი",
+        "Every 10 purchases unlocks a discount. Resets after redemption.": "ყოველი 10 შეძენის შემდეგ იხსნება ფასდაკლება. გამოყენების შემდეგ პროგრესი ნულდება.",
+        "No orders yet": "შეკვეთები ჯერ არ არის",
+        "Discount unlocked!": "ფასდაკლება გაიხსნა!",
+        "Orders": "შეკვეთები",
+        "more purchase(s) until next discount": "შეძენა დარჩა შემდეგ ფასდაკლებამდე",
+        "loading": "პროფილი იტვირთება…",
+        "verified": "ვერიფიცირებული",
+        "notVerified": "არ არის ვერიფიცირებული",
+        "total": "სულ"
+    },
+    "homePage": {
+        "Best Prices": "საუკეთესო ფასები",
+        "Incredible Prices on All Your Favorite Items": "დაბალი ფასები თქვენს საყვარელ პროდუქტებზე",
+        "Shop Now": "შეიძინეთ ახლავე",
+        "Get more for less price": "მიიღეთ მეტი ნაკლებ ფასად",
+        "Curbside pickup": "ადგილზე მიტანა",
+        "Free shipping": "უფასო მიწოდება",
+        "Low prices guaranted": "დაბალი ფასების გარანტია",
+        "Avaible to you 24/7": "ხელმისაწვდომია თქვენთვის 24/7",
+        "View all": "ყველას ნახვა",
+        "No products available": "პროდუქტები არ არის",
+        "Add": "დამატება",
+        "Sold out": "ამოიყიდა",
+        "In stock": "მარაგში",
+        "Out of stock": "არ არის მარაგში",
+        "New": "ახალი",
+        "Off": "ფასდაკლება",
+        "Mobiles": "მობილურები",
+        "Tabs": "ტაბები",
+        "Smart Watches": "ჭკვიანი საათები"
+    },
+    "analytics": {
+        "loading": "ანალიტიკა იტვირთება…",
+        "kpi": {
+            "totalRevenue": "სულ შემოსავალი",
+            "totalOrders": "სულ შეკვეთები",
+            "totalUsers": "სულ მომხმარებლები",
+            "productsSold": "გაყიდული პროდუქტები",
+            "avgOrderValue": "შეკვეთის საშუალო ღირებულება"
+        },
+        "charts": {
+            "dailyRevenue": "ყოველდღიური შემოსავალი (ბოლო 30 დღე)",
+            "orderStatus": "შეკვეთის სტატუსი",
+            "topBySales": "საუკეთესო პროდუქტები გაყიდვების მიხედვით",
+            "topByRevenue": "საუკეთესო პროდუქტები შემოსავლის მიხედვით",
+            "topCustomers": "საუკეთესო მომხმარებლები დანახარჯის მიხედვით",
+            "paymentMethods": "გადახდის მეთოდები",
+            "lowStock": "მარაგის გამოლევის გაფრთხილება"
+        },
+        "labels": {
+            "orders": "შეკვეთები",
+            "sold": "გაყიდული",
+            "card": "ბარათი",
+            "cash": "ნაღდი",
+            "paypal": "PayPal",
+            "allStocked": "ყველა პროდუქტი საკმარის მარაგშია ✅",
+            "outOfStock": "ამოიყიდა",
+            "left": "დარჩა"
+        }
+    },
+    "orders": {
+        "title": "შეკვეთების მართვა",
+        "loading": "შეკვეთები იტვირთება…",
+        "empty": "შეკვეთები ვერ მოიძებნა",
+        "ordersCount": "შეკვეთა",
+        "filters": {
+            "all": "ყველა"
+        },
+        "table": {
+            "id": "#ID",
+            "customer": "მომხმარებელი",
+            "date": "თარიღი",
+            "items": "პროდუქტები",
+            "payment": "გადახდა",
+            "total": "სულ",
+            "status": "სტატუსი",
+            "actions": "მოქმედებები"
+        },
+        "actions": {
+            "markAsPaid": "გადახდილად მონიშვნა",
+            "markAsShipped": "გაგზავნილად მონიშვნა",
+            "markAsDelivered": "მიწოდებულად მონიშვნა",
+            "cancelOrder": "შეკვეთის გაუქმება"
+        },
+        "uid": "UID"
+    }
+}

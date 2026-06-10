@@ -1,0 +1,17 @@
+<nav class="side-nav">
+  @if (userRole() == 1) {
+    <ul>
+      <li routerLink="/add-category" routerLinkActive="active">{{ 'userPage.Manage Categories' | translate }}</li>
+      <li routerLink="/add-brand" routerLinkActive="active">{{ 'userPage.Manage Brands' | translate }}</li>
+      <li routerLink="/add-product" routerLinkActive="active">{{ 'userPage.New Product' | translate }}</li>
+      <li routerLink="/manage-users" routerLinkActive="active">{{ 'userPage.Users' | translate }}</li>
+      <li routerLink="/manage-orders" routerLinkActive="active">{{ 'userPage.Orders' | translate }}</li>
+      <li routerLink="/analytics" routerLinkActive="active">{{ 'userPage.Analytics' | translate }}</li>
+    </ul>
+  } @else {
+    <ul>
+      <!-- <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ 'userPage.home' | translate }}</li>
+      <li routerLink="/shop" routerLinkActive="active">{{ 'userPage.shop' | translate }}</li> -->
+    </ul>
+  }
+</nav>

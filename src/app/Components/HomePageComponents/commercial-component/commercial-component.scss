@@ -1,0 +1,54 @@
+.home-section-3 {
+    margin: 50px auto;
+    .commerical-section {
+        max-width: 1440px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #e8e8e8;
+        border-radius: 15px;
+        .commerical {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            .bicyle, .box, .prices, .clock {
+                transition: all 0.3s;
+            }
+             &:hover {
+                .bicyle {
+                    transform: translateX(190px);
+                }
+                .box {
+                    transform: translateY(-15px);
+                }
+                .prices {
+                    transform: translateX(-15px);
+                }
+                .clock {
+                    transform: rotate(360deg);
+                }
+                p {
+                    scale: 1.1;
+                    transition-delay: 0.3s;
+                    color: #EC5E2A;
+                }
+            }
+            svg {
+                width: 70px;
+            }
+            p {
+                font-size: 20px;
+                font-family: Roboto Flex, sans-serif;
+                max-width: 100px;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// change svg colors
+.home-section-3 svg [data-color="2"] {
+  fill: #EC5E2A !important;
+}

@@ -1,0 +1,245 @@
+<div class="analytics-container">
+
+  <!-- ══ HEADER ═══════════════════════════════════════════════ -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <span>{{ 'analytics.loading' | translate }}</span>
+    </div>
+  }
+
+  @if (!isLoading() && data()) {
+
+    <!-- ══ KPI CARDS ══════════════════════════════════════════ -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-revenue">
+        <div class="kpi-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">{{ 'analytics.kpi.totalRevenue' | translate }}</span>
+          <span class="kpi-value">${{ data()!.totalRevenue | number: '1.0-0' }}</span>
+        </div>
+      </div>
+      <div class="kpi-card kpi-orders">
+        <div class="kpi-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">{{ 'analytics.kpi.totalOrders' | translate }}</span>
+          <span class="kpi-value">{{ data()!.totalOrders }}</span>
+        </div>
+      </div>
+      <div class="kpi-card kpi-users">
+        <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">{{ 'analytics.kpi.totalUsers' | translate }}</span>
+          <span class="kpi-value">{{ data()!.totalUsers }}</span>
+        </div>
+      </div>
+      <div class="kpi-card kpi-sold">
+        <div class="kpi-icon"><i class="fa-solid fa-cart-flatbed"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">{{ 'analytics.kpi.productsSold' | translate }}</span>
+          <span class="kpi-value">{{ data()!.totalProductsSold }}</span>
+        </div>
+      </div>
+      <div class="kpi-card kpi-avg">
+        <div class="kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">{{ 'analytics.kpi.avgOrderValue' | translate }}</span>
+          <span class="kpi-value">${{ data()!.averageOrderValue | number: '1.0-0' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ROW 1: Revenue Chart + Order Status ════════════════ -->
+    <div class="charts-row">
+
+      <!-- Daily Revenue Bar Chart -->
+      <div class="chart-card chart-wide">
+        <div class="card-header">
+          <h3><i class="fa-solid fa-chart-column"></i> {{ 'analytics.charts.dailyRevenue' | translate }}</h3>
+        </div>
+        <div class="bar-chart-wrap">
+          <div class="bar-chart">
+            @for (day of data()!.dailyRevenue; track day.date) {
+              <div class="bar-col" [title]="day.date + ': $' + day.revenue">
+                <div
+                  class="bar-fill"
+                  [style.height.%]="getBarHeight(day.revenue)"
+                  [class.bar-zero]="day.revenue === 0">
+                </div>
+                @if (isWeekMark($index)) {
+                  <span class="bar-label">{{ day.date }}</span>
+                }
+              </div>
+            }
+          </div>
+          <div class="bar-legend">
+            <span class="legend-max">${{ maxDailyRevenue() | number: '1.0-0' }}</span>
+            <span class="legend-zero">$0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Status Donut -->
+      <div class="chart-card chart-narrow">
+        <div class="card-header">
+          <h3><i class="fa-solid fa-circle-half-stroke"></i> {{ 'analytics.charts.orderStatus' | translate }}</h3>
+        </div>
+        <div class="donut-wrap">
+          <svg viewBox="0 0 120 120" class="donut-svg">
+            @for (seg of orderStatusSegments(); track seg.label) {
+              <circle
+                class="donut-seg"
+                cx="60" cy="60" r="45"
+                [attr.stroke]="seg.color"
+                [attr.stroke-dasharray]="seg.dash"
+                [attr.stroke-dashoffset]="seg.offset"
+              />
+            }
+            <text x="60" y="56" text-anchor="middle" class="donut-center-num">{{ data()!.totalOrders }}</text>
+            <text x="60" y="68" text-anchor="middle" class="donut-center-label">{{ 'analytics.labels.orders' | translate }}</text>
+          </svg>
+          <div class="donut-legend">
+            @for (seg of orderStatusSegments(); track seg.label) {
+              <div class="donut-item">
+                <span class="donut-dot" [style.background]="seg.color"></span>
+                <span class="donut-label">{{ seg.label }}</span>
+                <span class="donut-count">{{ seg.count }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ ROW 2: Top Products ════════════════════════════════ -->
+    <div class="charts-row">
+
+      <!-- Top by Sales -->
+      <div class="chart-card">
+        <div class="card-header">
+          <h3><i class="fa-solid fa-trophy"></i> {{ 'analytics.charts.topBySales' | translate }}</h3>
+        </div>
+        <div class="hbar-list">
+          @for (p of data()!.topProductsBySales; track p.id; let i = $index) {
+            <div class="hbar-row">
+              <span class="hbar-rank">#{{ i + 1 }}</span>
+              <div class="hbar-info">
+                <span class="hbar-name">{{ p.name }}</span>
+                <div class="hbar-track">
+                  <div class="hbar-fill" [style.width.%]="getHBarWidth(p.salesCount, data()!.topProductsBySales, 'salesCount')"></div>
+                </div>
+              </div>
+              <span class="hbar-val">{{ p.salesCount }} {{ 'analytics.labels.sold' | translate }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Top by Revenue -->
+      <div class="chart-card">
+        <div class="card-header">
+          <h3><i class="fa-solid fa-money-bill-trend-up"></i> {{ 'analytics.charts.topByRevenue' | translate }}</h3>
+        </div>
+        <div class="hbar-list">
+          @for (p of data()!.topProductsByRevenue; track p.id; let i = $index) {
+            <div class="hbar-row">
+              <span class="hbar-rank">#{{ i + 1 }}</span>
+              <div class="hbar-info">
+                <span class="hbar-name">{{ p.name }}</span>
+                <div class="hbar-track">
+                  <div class="hbar-fill hbar-fill-revenue" [style.width.%]="getHBarWidth(p.totalRevenue, data()!.topProductsByRevenue, 'totalRevenue')"></div>
+                </div>
+              </div>
+              <span class="hbar-val">${{ p.totalRevenue | number: '1.0-0' }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ ROW 3: Top Customers + Payment Methods ═════════════ -->
+    <div class="charts-row">
+
+      <!-- Top Customers by Spend -->
+      <div class="chart-card">
+        <div class="card-header">
+          <h3><i class="fa-solid fa-crown"></i> {{ 'analytics.charts.topCustomers' | translate }}</h3>
+        </div>
+        <div class="customer-list">
+          @for (u of data()!.topCustomersBySpend; track u.id; let i = $index) {
+            <div class="customer-row">
+              <div class="customer-rank" [class.gold]="i===0" [class.silver]="i===1" [class.bronze]="i===2">
+                {{ i + 1 }}
+              </div>
+              <div class="customer-info">
+                <span class="customer-name">{{ u.fullName }}</span>
+                <span class="customer-email">{{ u.email }}</span>
+              </div>
+              <div class="customer-stats">
+                <span class="customer-spent">${{ u.totalSpent | number: '1.0-0' }}</span>
+                <span class="customer-purchases">{{ u.purchaseCount }} {{ 'analytics.labels.orders' | translate }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Payment Methods + Low Stock -->
+      <div class="chart-col-stack">
+
+        <!-- Payment Methods -->
+        <div class="chart-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-credit-card"></i> {{ 'analytics.charts.paymentMethods' | translate }}</h3>
+          </div>
+          <div class="payment-bars">
+            <div class="payment-row">
+              <span class="payment-label"><i class="fa-solid fa-credit-card"></i> {{ 'analytics.labels.card' | translate }}</span>
+              <div class="payment-track">
+                <div class="payment-fill pay-card" [style.width.%]="getPaymentPct('card')"></div>
+              </div>
+              <span class="payment-count">{{ data()!.cardOrders }}</span>
+            </div>
+            <div class="payment-row">
+              <span class="payment-label"><i class="fa-solid fa-money-bill-wave"></i> {{ 'analytics.labels.cash' | translate }}</span>
+              <div class="payment-track">
+                <div class="payment-fill pay-cash" [style.width.%]="getPaymentPct('cash')"></div>
+              </div>
+              <span class="payment-count">{{ data()!.cashOrders }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Low Stock Alerts -->
+        <div class="chart-card chart-alert">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-triangle-exclamation"></i> {{ 'analytics.charts.lowStock' | translate }}</h3>
+          </div>
+          @if (data()!.lowStockProducts.length === 0) {
+            <p class="no-alerts">{{ 'analytics.labels.allStocked' | translate }}</p>
+          } @else {
+            <div class="stock-list">
+              @for (p of data()!.lowStockProducts; track p.id) {
+                <div class="stock-row" [class.out-of-stock]="p.stock === 0">
+                  <span class="stock-name">{{ p.name }}</span>
+                  <span class="stock-count" [class.stock-critical]="p.stock <= 2">
+                    @if (p.stock === 0) {
+                      {{ 'analytics.labels.outOfStock' | translate }}
+                    } @else {
+                      {{ p.stock }} {{ 'analytics.labels.left' | translate }}
+                    }
+                  </span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+</div>

@@ -1,0 +1,76 @@
+<div class="small-commerical">
+  <div class="commerical-container">
+    {{ 'nav.top commercial' | translate }}
+    <div class="nav-lang-content">
+      <p [class.active]="currentLanguage === 'en'" (click)="switchLanguage('en')">
+        <img src="/svgs/flag-for-flag-united-kingdom-svgrepo-com.svg"> EN
+      </p>
+      <p [class.active]="currentLanguage === 'ka'" (click)="switchLanguage('ka')">
+        <img src="/svgs/flag-for-flag-georgia-svgrepo-com.svg"> KA
+      </p>
+    </div>
+  </div>
+</div>
+<nav class="main-nav">
+  <div class="nav-container">
+    <div class="logo-text" routerLink="/">
+      <img src="/images/primetechlogo.png" alt="PrimeTech Logo">
+      <h1>PrimeTech</h1>
+    </div>
+    @if (userRole() !== 1 ) {
+      <div class="search">
+        <div class="input-container">
+          <input type="text" placeholder="{{ 'nav.search' | translate }}">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i> @if (searchResult().length > 0) { <div class="search-dropdown">
+            <div class="search-card">
+              <div class="search-card__image">
+                <img src="#" alt="Product Name" />
+                <span class="search-card__badge in">In stock</span>
+              </div>
+              <div class="search-card__info">
+                <h4>Product Name</h4>
+                <div class="search-card__price">
+                  <span class="current">$99.99</span>
+                  <span class="original">$129.99</span>
+                </div>
+                <div class="search-card__actions">
+                  <button class="btn-details">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div> }
+        </div>
+      </div>
+    }
+    <ul>
+      @if (userRole() != 1) {
+        <li (click)="toggleCartModal()">
+          <i class="fa-solid fa-cart-arrow-down"></i> {{ 'nav.cart' | translate }}
+          <span>{{totalItems()}}</span>
+      </li> 
+      }
+      @if (isUserLoggedIn()) { <li (click)="openUserPage()">
+        <i class="fa-solid fa-circle-user"></i> {{ userName() }}
+      </li> } @else { <li (click)="openLogIn()">
+        <i class="fa-solid fa-circle-user"></i> {{ 'nav.log in' | translate }}
+      </li> } <li (click)="toggleSideMenuModal()" style="background-color: #EC5E2A; color: #fff;">
+        <i class="fa-solid fa-bars"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+ @if (isLogInModalOpen()) { 
+  <app-log-in-modal></app-log-in-modal> 
+} @if (isVerifyUserModalOpen()) { 
+  <app-verify-user-modal></app-verify-user-modal> 
+}
+@if (isSideMenuModalOpen()) {
+  <app-side-menu-modal></app-side-menu-modal>
+}
+@if (isCartModalOpen()) {
+  <app-cart-modal></app-cart-modal>
+}
+

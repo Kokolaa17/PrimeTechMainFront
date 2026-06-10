@@ -1,0 +1,48 @@
+<section class="register-section">
+  <div class="register-container">
+    <h2>{{ 'register.Register' | translate }}</h2>
+    <form [formGroup]="registerForm" (submit)="registerUser()">
+      <div class="inputs">
+        <input formControlName="name" type="text" placeholder="+">
+        <label for="username">
+          <i class="fa-solid fa-user"></i> {{ 'register.Name' | translate }}
+        </label>
+      </div>
+      <div class="inputs">
+        <input formControlName="lastName" type="text" placeholder="+">
+        <label for="lastname">
+          <i class="fa-solid fa-user"></i> {{ 'register.Last Name' | translate }}
+        </label>
+      </div>
+      <div class="inputs">
+        <input formControlName="email" type="email" placeholder="+">
+        <label for="email">
+          <i class="fa-solid fa-envelope"></i> {{ 'register.Email' | translate }}
+        </label>
+      </div>
+      <div class="inputs">
+        <input formControlName="password" [type]="showPaassword() ? 'text' : 'password'" placeholder="+">
+        <label for="password">
+          <i class="fa-solid fa-lock"></i> {{ 'register.Password' | translate }}
+        </label>
+        <span [style.color]="showPaassword() ? 'red' : 'black'" (click)="toggleShowPassword()">
+          <i class="fa-solid fa-eye"></i>
+        </span>
+      </div>
+      <div class="button-writing">
+        <div [style.cursor]="registerForm.valid ? 'pointer' : 'not-allowed'">
+          <button type="submit" [style.background-color]="registerForm.valid ? '#ec5e2a' : '#ccc'" [disabled]="registerForm.invalid">
+            {{ 'register.Register' | translate }}
+          </button>
+        </div>
+        <p>{{ 'register.already have an account?' | translate }}
+          <span (click)="goToLogin()">{{ 'register.log in' | translate }}</span>
+        </p>
+      </div>
+    </form>
+  </div> @if (isRegistrationSuccessful()) { <div class="success-message">
+    <p>{{ registrationMessage() |translate}}</p>
+  </div> } @else if (isRegistrationSuccessful() === false) { <div class="error-message">
+    <p>{{ registrationMessage() |translate}}</p>
+  </div> }
+</section>

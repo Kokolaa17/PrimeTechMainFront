@@ -1,0 +1,150 @@
+<section class="add-new-product-section">
+  <div class="wrapper">
+    <h1>
+      {{ selectedProductId !== null ? ('AddProductPage.Update Product' | translate) : ('AddProductPage.Add Product' | translate) }}
+    </h1>
+    <p class="subtitle">{{ 'AddProductPage.Fill in the details below to list a new product.' | translate }}</p>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" id="productForm">
+      <div class="form-grid">
+
+        <div class="field full">
+          <input formControlName="name" type="text" id="name" placeholder="e.g. iPhone 15 Pro" />
+          <label for="name">{{ 'AddProductPage.Product Name' | translate }}</label>
+        </div>
+
+        <div class="field">
+          <select formControlName="categoryId" id="categoryId">
+            <option value="" disabled selected>{{ 'AddProductPage.Select category' | translate }}</option>
+            @for (cat of categories(); track cat.id) {
+              <option [value]="cat.id">{{ cat.name }}</option>
+            }
+          </select>
+          <label for="categoryId">{{ 'AddProductPage.Category' | translate }}</label>
+        </div>
+
+        <div class="field">
+          <select formControlName="brandId" id="brand">
+            <option value="" disabled selected>{{ 'AddProductPage.Select brand' | translate }}</option>
+            @for (brand of brands(); track brand.id) {
+              <option [value]="brand.id">{{ brand.name }}</option>
+            }
+          </select>
+          <label for="brand">{{ 'AddProductPage.Brand' | translate }}</label>
+        </div>
+
+        <div class="field full">
+          <textarea formControlName="description" id="description" placeholder="{{ 'AddProductPage.Describe the product' | translate }}"></textarea>
+          <label for="description">{{ 'AddProductPage.Description' | translate }}</label>
+        </div>
+
+        <div class="section-label">{{ 'AddProductPage.Pricing & Stock' | translate }}</div>
+
+        <div class="three-col">
+          <div class="field">
+            <input formControlName="price" type="number" id="price" placeholder="0.00" step="0.01" />
+            <label for="price">{{ 'AddProductPage.Price' | translate }}</label>
+          </div>
+          <div class="field">
+            <input formControlName="stock" type="number" id="stock" placeholder="0" />
+            <label for="stock">{{ 'AddProductPage.Stock' | translate }}</label>
+          </div>
+          <div class="field">
+            <input formControlName="warrantyMonths" type="number" id="warranty" placeholder="e.g. 12" />
+            <label for="warranty">{{ 'AddProductPage.Warranty (months)' | translate }}</label>
+          </div>
+        </div>
+
+        <div class="section-label">{{ 'AddProductPage.Images' | translate }}</div>
+
+        <div class="field full" formArrayName="images">
+          <div class="tag-wrapper" #tagWrapper>
+            @for (ctrl of images.controls; track $index) {
+              <span class="tag">
+                {{ ctrl.value }}
+                <button type="button" (click)="removeImage($index)">✕</button>
+              </span>
+            }
+            <input #imageInput type="text" [placeholder]="'AddProductPage.Paste URL and press Enter…' | translate"
+              (keydown.enter)="addImage($event)" />
+          </div>
+          <label>{{ 'AddProductPage.Images (min. 3)' | translate }}</label>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit">
+            {{ selectedProductId !== null ? ('AddProductPage.Update Product' | translate) : ('AddProductPage.Add Product' | translate) }}
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  @if (productAddStatus() === true) {
+    <div class="toast success">
+      <i class="fa-solid fa-circle-check"></i>
+      {{ productAddMessage() | translate }}
+    </div>
+  } @else if (productAddStatus() === false) {
+    <div class="toast error">
+      <i class="fa-solid fa-circle-xmark"></i>
+      {{ productAddMessage() | translate }}
+    </div>
+  }
+
+  <div class="products-list-wrapper">
+    <div class="list-header">
+      <h2>{{ 'AddProductPage.Products List' | translate }} <span>( {{ products().length }} )</span></h2>
+    </div>
+
+    @if (products().length === 0) {
+      <div class="empty-state">
+        <i class="fa-regular fa-folder-open"></i>
+        <p>{{ 'AddProductPage.No products found' | translate }}</p>
+      </div>
+    }
+
+    <div class="product-grid">
+      @for (prod of products(); track prod.id) {
+        <div class="product-card" [class.danger-border]="prod.stock <= 10">
+          
+          <div class="card-icon">
+            @if (prod.images && prod.images.length > 0) {
+              <img [src]="prod.images[0]" [alt]="prod.name" (error)="onCardImageError($event)" />
+            } @else {
+              <i class="fa-regular fa-image"></i>
+            }
+          </div>
+
+          <div class="card-info">
+            <span class="card-name">{{ prod.name }}</span>
+            <div class="card-meta">
+              <span class="card-price">${{ prod.price }}</span>
+              <span class="card-stock" [class.danger-text]="prod.stock <= 10">
+                {{ 'AddProductPage.Stock' | translate }}: {{ prod.stock }}
+              </span>
+            </div>
+            
+            @if (prod.stock <= 10) {
+              <span class="danger-zone-badge">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                {{ 'AddProductPage.Stock is at danger zone' | translate }}
+              </span>
+            }
+          </div>
+
+          <div class="card-actions">
+            <button class="btn-edit" (click)="onEdit(prod)" [title]="'AddProductPage.Edit' | translate">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="btn-delete" (click)="onDelete(prod.id)" [title]="'AddProductPage.Delete' | translate">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+
+        </div>
+      }
+    </div>
+  </div>
+</section>

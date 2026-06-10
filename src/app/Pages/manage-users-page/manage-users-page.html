@@ -1,0 +1,201 @@
+<section class="manage-users-page">
+  <div class="wrapper">
+    <h1>{{ 'manageUsers.title' | translate }}</h1>
+
+    <p>{{ 'manageUsers.subtitle' | translate }}</p>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+
+        <div class="field">
+          <input
+            formControlName="name"
+            type="text"
+            id="name"
+            [placeholder]="'manageUsers.name' | translate"
+          />
+          <label for="name">{{ 'manageUsers.name' | translate }}</label>
+        </div>
+
+        <div class="field">
+          <input
+            formControlName="surname"
+            type="text"
+            id="surname"
+            [placeholder]="'manageUsers.surname' | translate"
+          />
+          <label for="surname">{{ 'manageUsers.surname' | translate }}</label>
+        </div>
+
+        <div class="field">
+          <input
+            formControlName="email"
+            type="email"
+            id="email"
+            [placeholder]="'manageUsers.email' | translate"
+          />
+          <label for="email">{{ 'manageUsers.email' | translate }}</label>
+        </div>
+
+        <div class="field">
+          <input
+            formControlName="avatarUrl"
+            type="text"
+            id="avatarUrl"
+            [placeholder]="'manageUsers.avatarUrl' | translate"
+          />
+          <label for="avatarUrl">
+            {{ 'manageUsers.avatarUrl' | translate }}
+          </label>
+        </div>
+
+        <div class="field">
+          <select formControlName="role" id="role">
+            <option [value]="0">
+              {{ 'manageUsers.user' | translate }}
+            </option>
+            <option [value]="1">
+              {{ 'manageUsers.admin' | translate }}
+            </option>
+            <option [value]="2">
+              {{ 'manageUsers.manager' | translate }}
+            </option>
+          </select>
+
+          <label for="role">
+            {{ 'manageUsers.role' | translate }}
+          </label>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit">
+            {{ 'manageUsers.updateUser' | translate }}
+          </button>
+        </div>
+
+      </div>
+    </form>
+    @if (updateUserStatus() === true) {
+    <div class="toast success">
+      <i class="fa-solid fa-circle-check"></i>
+      {{ updateUserMessage() | translate }}
+    </div>
+  } @else if (updateUserStatus() === false) {
+    <div class="toast error">
+      <i class="fa-solid fa-circle-xmark"></i>
+      {{ updateUserMessage() | translate }}
+    </div>
+  }
+  </div>
+
+  <div class="user-grid">
+    <div class="list-header">
+      <h2>{{ 'manageUsers.Users List' | translate }} <span>( {{ users().length }} )</span></h2>
+    </div>
+    @for(user of users(); track user.id) {
+
+    <div class="user-card">
+
+      <div class="card-icon">
+        @if(user.avatarUrl) {
+        <img
+          [src]="user.avatarUrl"
+          [alt]="user.firstName || user.name"
+        />
+        } @else {
+        <i class="fa-solid fa-user"></i>
+        }
+      </div>
+
+      <div class="card-info">
+        <div class="card-header-row">
+
+          <span class="card-name">
+            {{ user.firstName || user.name }}
+            {{ user.lastName }}
+          </span>
+
+          <span class="card-badge">
+            {{ ('manageUsers.' + getRoleName(user.role).toLowerCase()) | translate }}
+          </span>
+
+          @if(user.isVerified) {
+          <span class="verified-badge">
+            <i class="fa-solid fa-circle-check"></i>
+            {{ 'manageUsers.verified' | translate }}
+          </span>
+          }
+
+        </div>
+
+        <span class="card-email">
+          <i class="fa-solid fa-envelope"></i>
+          {{ user.email }}
+        </span>
+
+        <div class="card-stats">
+
+          <div class="stat">
+            <span class="stat-label">
+              {{ 'manageUsers.balance' | translate }}
+            </span>
+
+            <span class="stat-value">
+              ${{ user.balance | number:'1.2-2' }}
+            </span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-label">
+              {{ 'manageUsers.totalSpent' | translate }}
+            </span>
+
+            <span class="stat-value accent">
+              ${{ user.totalSpent | number:'1.2-2' }}
+            </span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-label">
+              {{ 'manageUsers.purchases' | translate }}
+            </span>
+
+            <span class="stat-value">
+              {{ user.purchaseCount }}
+            </span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-label">
+              {{ 'manageUsers.orders' | translate }}
+            </span>
+
+            <span class="stat-value">
+              {{ user.orders?.length ?? 0 }}
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card-actions">
+        @if (user.role !== 1) {
+          <button class="btn-edit" (click)="viewUser(user)">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        }
+
+        <button class="btn-edit" (click)="onEdit(user)">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+
+        <button class="btn-delete" (click)="onDelete(user.id)">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+
+    </div>
+
+    }
+  </div>
+</section>

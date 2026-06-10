@@ -1,0 +1,93 @@
+<div class="my-orders-container">
+
+  <!-- ── LOADING ── -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <span>Loading your orders…</span>
+    </div>
+  }
+
+  @if (!isLoading() && user()) {
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">
+          <i class="fa-solid fa-bag-shopping"></i>
+          My Orders
+        </h1>
+        <p class="page-sub">Hello, <strong>{{ user()?.name }}</strong> — here's your full order history.</p>
+      </div>
+      <div class="header-stats">
+        <div class="hstat">
+          <span class="hstat-value">{{ orders().length }}</span>
+          <span class="hstat-label">Orders</span>
+        </div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <span class="hstat-value">${{ totalSpent() | number: '1.2-2' }}</span>
+          <span class="hstat-label">Total Spent</span>
+        </div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <span class="hstat-value">{{ user()?.purchaseCount }}</span>
+          <span class="hstat-label">Purchases</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ORDERS LIST ── -->
+    @if (orders().length) {
+      <div class="orders-grid">
+        @for (order of orders(); track order.id) {
+          <div class="order-card">
+
+            <div class="order-top">
+              <span class="order-id">#{{ order.id }}</span>
+              <span class="order-status" [ngClass]="getStatusClass(order.status)">
+                {{ getStatusLabel(order.status) }}
+              </span>
+            </div>
+
+            <div class="order-meta">
+              <span class="order-date">
+                <i class="fa-regular fa-calendar"></i>
+                {{ order.createdAt | date: 'MMM d, y · h:mm a' }}
+              </span>
+              <span class="order-payment">
+                <i [class]="getPaymentIcon(order.paymentMethod)"></i>
+                {{ getPaymentLabel(order.paymentMethod) }}
+              </span>
+            </div>
+
+            <div class="order-items">
+              @for (item of order.items; track item.productId) {
+                <div class="item-row">
+                  <span class="item-name">{{ item.productName }}</span>
+                  <div class="item-meta">
+                    <span class="qty">×{{ item.quantity }}</span>
+                    <span class="unit">${{ item.unitPrice | number }}</span>
+                    <span class="subtotal">${{ item.subTotal | number }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <div class="order-footer">
+              <span>Total</span>
+              <span>${{ order.totalAmount | number: '1.2-2' }}</span>
+            </div>
+
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <i class="fa-solid fa-box-open"></i>
+        <p>You haven't placed any orders yet.</p>
+      </div>
+    }
+
+  }
+</div>

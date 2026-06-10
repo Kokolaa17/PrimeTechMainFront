@@ -1,0 +1,520 @@
+.small-commerical {
+  background-color: #ec5e2a;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+
+  .commerical-container {
+    font-family: Anton, sans-serif;
+    color: #fff;
+    font-size: 16px;
+    padding-block: 10px;
+    letter-spacing: 4px;
+    font-weight: 400;
+    text-align: center;
+    .nav-lang-content {
+      position: absolute;
+      right: 60px;
+      top: 25%;
+      display: flex;
+      gap: 5px;
+      p {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: normal;
+        letter-spacing: 1px;
+        font-family: Roboto Slab, serif;
+        img {
+          height: 20px;
+          width: 20px;
+        }
+
+        &:hover {
+          background: rgba(192, 82, 42, 0.08);
+        }
+
+        &.active {
+          background-color: #fff;
+          padding: 3px;
+          border-radius: 12px;
+          color: #000;
+        }
+      }
+    }
+  }
+}
+
+.main-nav {
+  background-color: #f2f0f0;
+  height: 70px;
+  position: fixed;
+  width: 100%;
+  top: 45px;
+  z-index: 100;
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0px 15px;
+    height: 100%;
+
+    .logo-text {
+      display: flex;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+
+      img {
+        height: 130px;
+        width: auto;
+      }
+
+      h1 {
+        font-family: Roboto Slab, serif;
+        color: #ec5e2a;
+        font-size: 24px;
+        position: absolute;
+        left: 115px;
+        white-space: nowrap;
+      }
+    }
+
+    .search {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+
+      .input-container {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+
+        input {
+          width: 100%;
+          height: 40px;
+          border: 1px solid #ec5e2a;
+          border-radius: 15px;
+          padding: 0 40px 0 10px;
+          font-size: 14px;
+          box-sizing: border-box;
+
+          &:focus {
+            outline: none;
+            box-shadow: 0px 0px 10px #ec5e2a;
+          }
+        }
+
+        .search-icon {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+        }
+
+        .search-dropdown {
+          position: absolute;
+          top: calc(100% + 8px);
+          left: 0;
+          right: 0;
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+          max-height: 480px;
+          overflow-y: auto;
+          z-index: 1000;
+          padding: 8px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+
+          &::-webkit-scrollbar {
+            width: 4px;
+          }
+          &::-webkit-scrollbar-thumb {
+            background: #f97316;
+            border-radius: 4px;
+          }
+
+          .search-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+
+            &:hover {
+              background: #fff5f0;
+            }
+
+            &__image {
+              position: relative;
+              width: 64px;
+              height: 64px;
+              flex-shrink: 0;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                border-radius: 8px;
+                border: 1px solid #f0f0f0;
+              }
+            }
+
+            &__badge {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              text-align: center;
+              font-size: 9px;
+              font-weight: 600;
+              padding: 2px 4px;
+              border-radius: 0 0 8px 8px;
+              color: white;
+
+              &.out {
+                background: red;
+              }
+              &.in {
+                background: #ec5e2a;
+              }
+            }
+
+            &__info {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+              min-width: 0; // allows text-overflow to work
+
+              h4 {
+                font-size: 13px;
+                font-weight: 600;
+                color: #222;
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 200px;
+              }
+            }
+
+            &__price {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+
+              .current {
+                font-size: 14px;
+                font-weight: 700;
+                color: #f97316;
+              }
+              .original {
+                font-size: 12px;
+                color: #aaa;
+                text-decoration: line-through;
+              }
+            }
+
+            &__actions {
+              display: flex;
+              gap: 6px;
+
+              .btn-details {
+                padding: 5px 10px;
+                border: 1px solid #e0e0e0;
+                border-radius: 6px;
+                background: white;
+                color: #555;
+                cursor: pointer;
+                font-size: 12px;
+                transition: all 0.15s;
+
+                &:hover {
+                  border-color: #f97316;
+                  color: #f97316;
+                }
+              }
+
+              .btn-cart {
+                padding: 5px 12px;
+                border: none;
+                border-radius: 6px;
+                background: #f97316;
+                color: white;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 600;
+                transition: background 0.15s;
+
+                &:hover {
+                  background: #ea6c0a;
+                }
+              }
+            }
+          }
+
+          .search-empty {
+            padding: 16px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    ul {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+      flex-shrink: 0;
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 15px;
+        font-family: Roboto Flex, sans-serif;
+        position: relative;
+        cursor: pointer;
+        white-space: nowrap;
+
+        i {
+          font-size: 18px;
+        }
+
+        span {
+          position: absolute;
+          right: -8px;
+          top: -8px;
+          background-color: #ec5e2a;
+          padding: 4px 8px;
+          color: #fff;
+          border-radius: 50%;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeAway {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+// logo go away
+@media (max-width: 1200px) {
+  .logo-text {
+    h1 {
+      display: none !important;
+    }
+  }
+}
+
+// ─── Responsive: Tablet (≤ 1024px) ──────────────────────────────────────────
+
+@media (max-width: 1024px) {
+  .small-commerical .commerical-container {
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding-block: 8px;
+  }
+
+  .main-nav {
+    top: 35px !important;
+
+    .nav-container {
+      padding: 0 12px;
+
+      .logo-text {
+        img {
+          height: 100px;
+        }
+      }
+
+      .search {
+        padding: 0 12px;
+
+        .input-container input {
+          max-width: 100%;
+        }
+      }
+
+      ul {
+        gap: 12px;
+
+        li {
+          padding: 10px 12px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+// ─── Responsive: Mobile (≤ 768px) ───────────────────────────────────────────
+
+@media (max-width: 768px) {
+  .small-commerical .commerical-container {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    padding-block: 7px;
+  }
+
+  .main-nav {
+    top: 32px !important;
+    height: 60px;
+
+    .nav-container {
+      padding: 0 10px;
+      gap: 8px;
+
+      .logo-text {
+        img {
+          height: 80px;
+        }
+        h1 {
+          font-size: 17px;
+          left: 72px;
+        }
+      }
+
+      .search {
+        padding: 0 8px;
+
+        .input-container {
+          input {
+            height: 36px;
+            font-size: 13px;
+          }
+
+          .search-dropdown {
+            max-height: 360px;
+            left: -106px !important;
+            width: 100vw !important;
+
+            .search-card {
+              &__image {
+                width: 50px;
+                height: 50px;
+              }
+            }
+          }
+        }
+      }
+
+      ul {
+        gap: 8px;
+
+        li {
+          padding: 8px 10px;
+          font-size: 13px;
+          border-radius: 10px;
+
+          // Hide label text — show icons only on mobile
+          &:not(:last-child) {
+            .li-label {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ─── Responsive: Small Mobile (≤ 480px) ─────────────────────────────────────
+
+@media (max-width: 480px) {
+  .small-commerical .commerical-container {
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding-block: 6px;
+  }
+
+  .main-nav {
+    top: 34px;
+    height: 56px;
+
+    .nav-container {
+      padding: 0 8px;
+      gap: 6px;
+
+      // Hide the brand name text on very small screens — logo image is enough
+      .logo-text {
+        img {
+          height: 70px;
+        }
+        h1 {
+          display: none !important;
+        }
+      }
+
+      .search {
+        padding: 0 6px;
+
+        .input-container input {
+          height: 34px;
+          font-size: 12px;
+          border-radius: 10px;
+        }
+
+        .search-dropdown {
+          max-height: 280px;
+
+          .search-card {
+            gap: 8px;
+            padding: 6px 8px;
+
+            &__image {
+              width: 44px;
+              height: 44px;
+            }
+            &__info h4 {
+              font-size: 12px;
+              max-width: 110px;
+            }
+            &__price .current {
+              font-size: 12px;
+            }
+            &__actions .btn-details {
+              padding: 4px 8px;
+            }
+          }
+        }
+      }
+
+      ul {
+        gap: 6px;
+
+        li {
+          padding: 7px 9px;
+          border-radius: 10px;
+          i {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}

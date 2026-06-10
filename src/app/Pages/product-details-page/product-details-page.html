@@ -1,0 +1,358 @@
+<div class="pd-wrap">
+
+  @if (isLoadingProduct()) {
+    <div class="pd-loading">
+      <div class="pd-spinner"></div>
+      <p>{{ 'loading' | translate }}</p>
+    </div>
+  }
+
+  @if (!isLoadingProduct() && product()) {
+
+    <nav class="pd-breadcrumb">
+      <a href="/">{{ 'home' | translate }}</a>
+      <span class="pd-breadcrumb__sep">›</span>
+      <a href="#">{{ product()!.category.name }}</a>
+      <span class="pd-breadcrumb__sep">›</span>
+      <span>{{ product()!.name }}</span>
+    </nav>
+
+    <section class="pd-main">
+
+      <div class="pd-gallery">
+        @if (product()!.images && product()!.images.length > 0) {
+          <div class="pd-gallery__main">
+            <img
+              [src]="product()!.images[selectedImageIndex()]"
+              [alt]="product()!.name"
+              (error)="onImageError($event)"
+              class="pd-gallery__img"
+            />
+            @if (product()!.stock === 0) {
+              <span class="pd-badge pd-badge--oos">
+                {{ 'outOfStock' | translate }}
+              </span>
+            }
+          </div>
+
+          @if (product()!.images.length > 1) {
+            <div class="pd-gallery__thumbs">
+              @for (image of product()!.images; track $index) {
+                <button
+                  class="pd-gallery__thumb"
+                  [class.is-active]="selectedImageIndex() === $index"
+                  (click)="selectImage($index)"
+                >
+                  <img [src]="image" [alt]="product()!.name" (error)="onImageError($event)" />
+                </button>
+              }
+            </div>
+          }
+        }
+      </div>
+
+      <div class="pd-info">
+
+        <div class="pd-meta">
+          <span class="pd-meta__brand">
+            @if (product()!.category.image) {
+              <img [src]="product()!.category.image" class="pd-meta__icon" alt="" />
+            }
+            {{ product()!.brand.name }}
+          </span>
+          <span class="pd-meta__cat">{{ product()!.category.name }}</span>
+        </div>
+
+        <h1 class="pd-title">{{ product()!.name }}</h1>
+
+        @if (product()!.reviewsCount > 0) {
+          <div class="pd-rating">
+            <span class="pd-rating__stars">{{ getStars(product()!.averageRating) }}</span>
+            <span class="pd-rating__score">{{ product()!.averageRating }}</span>
+            <span class="pd-rating__count">({{ product()!.reviewsCount }} {{ 'reviews' | translate }})</span>
+          </div>
+        } @else {
+          <div class="pd-rating pd-rating--empty">
+            <span class="pd-rating__stars">☆☆☆☆☆</span>
+            <span class="pd-rating__none">{{ 'noReviewsYet' | translate }}</span>
+          </div>
+        }
+
+        <div class="pd-price-row">
+          <div class="pd-price-container">
+            <span class="pd-price">${{ product()!.price }}</span>
+            @if (product()!.oldPrice) {
+              <span class="pd-price--old">${{ product()!.oldPrice }}</span>
+            }
+          </div>
+
+          @if (product()!.stock > 0) {
+            <span class="pd-stock pd-stock--in">✓ {{ 'inStock' | translate }}</span>
+          } @else {
+            <span class="pd-stock pd-stock--out">✕ {{ 'outOfStock' | translate }}</span>
+          }
+        </div>
+
+        <p class="pd-desc">{{ product()!.description }}</p>
+
+        <ul class="pd-specs">
+          <li class="pd-specs__item">
+            <span class="pd-specs__icon">🛡️</span>
+            <span class="pd-specs__label">{{ 'warranty' | translate }}</span>
+            <span class="pd-specs__val">{{ product()!.warrantyMonths }} {{ 'months' | translate }}</span>
+          </li>
+          <li class="pd-specs__item">
+            <span class="pd-specs__icon">📦</span>
+            <span class="pd-specs__label">{{ 'availableStock' | translate }}</span>
+            <span class="pd-specs__val">
+              @if (product()!.stock > 0) {
+                {{ product()!.stock }} {{ 'units' | translate }}
+              } @else {
+                <span class="text-danger">{{ 'outOfStock' | translate }}</span>
+              }
+            </span>
+          </li>
+          @if (product()!.salesCount > 0) {
+            <li class="pd-specs__item">
+              <span class="pd-specs__icon">🔥</span>
+              <span class="pd-specs__label">{{ 'Popularity' | translate }}</span>
+              <span class="pd-specs__val">{{ product()!.salesCount }} {{ 'itemsSold' | translate }}</span>
+            </li>
+          }
+          <li class="pd-specs__item">
+            <span class="pd-specs__icon">📅</span>
+            <span class="pd-specs__label">{{ 'Listed On' | translate }}</span>
+            <span class="pd-specs__val">{{ product()!.createdAt | date: 'mediumDate' }}</span>
+          </li>
+        </ul>
+
+        @if (product()!.stock > 0) {
+          <div class="pd-cart">
+            <button
+              class="pd-cart__btn"
+              (click)="addToCart()"
+              [disabled]="isAddingToCart()"
+            >
+              @if (!isAddingToCart()) {
+                <span>🛒 {{ 'addToCart' | translate }}</span>
+              } @else {
+                <span>{{ 'adding' | translate }}...</span>
+              }
+            </button>
+          </div>
+        } @else {
+          <div class="pd-oos-action">
+            <button class="pd-cart__btn pd-cart__btn--disabled" disabled>
+              ✕ {{ 'outOfStock' | translate }}
+            </button>
+          </div>
+        }
+
+        @if (addToCartStatus() === 1) {
+          <div class="pd-alert pd-alert--ok">{{ addToCartMessage() }}</div>
+        }
+        @if (addToCartStatus() === 0) {
+          <div class="pd-alert pd-alert--err">{{ addToCartMessage() }}</div>
+        }
+
+      </div>
+    </section>
+
+    <section class="pd-reviews">
+      <div class="pd-reviews__header">
+        <h2>{{ 'customerReviews' | translate }} ({{ reviews().length }})</h2>
+      </div>
+
+      @if (showReviewForm()) {
+        <div class="pd-write-review-section">
+          <div class="pd-write-review-section__head">
+            <h3>{{ 'writeReview' | translate }}</h3>
+            <button (click)="showReviewForm.set(false)" class="pd-btn-close" title="Cancel">✕</button>
+          </div>
+
+          <div class="pd-new-form">
+
+            <!-- Rating -->
+            <div class="pd-new-form__row">
+              <label class="pd-new-form__label">{{ 'rating' | translate }} *</label>
+              <div class="pd-interactive-stars">
+                @for (star of [5, 4, 3, 2, 1]; track star) {
+                  <button
+                    type="button"
+                    class="pd-interactive-stars__btn"
+                    [class.is-on]="reviewRating() >= star"
+                    (click)="reviewRating.set(star)"
+                  >★</button>
+                }
+              </div>
+            </div>
+
+            <!-- Comment only — no title field -->
+            <div class="pd-new-form__group">
+              <label class="pd-new-form__label">{{ 'comment' | translate }} *</label>
+              <textarea
+                [ngModel]="reviewComment()"
+                (ngModelChange)="reviewComment.set($event)"
+                class="pd-new-form__input pd-new-form__input--textarea"
+                rows="4"
+                placeholder="{{ 'shareYourExperience' | translate }}"
+              ></textarea>
+            </div>
+
+            <div class="pd-new-form__footer">
+              <div class="pd-new-form__alerts">
+                @if (reviewSubmitStatus() === 1) {
+                  <div class="pd-alert pd-alert--ok">{{ reviewSubmitMessage() }}</div>
+                }
+                @if (reviewSubmitStatus() === 0) {
+                  <div class="pd-alert pd-alert--err">{{ reviewSubmitMessage() }}</div>
+                }
+              </div>
+
+              <div class="pd-new-form__buttons">
+                <button (click)="showReviewForm.set(false)" class="pd-btn pd-btn--ghost">
+                  {{ 'cancel' | translate }}
+                </button>
+                <button
+                  (click)="submitReview()"
+                  class="pd-btn pd-btn--orange"
+                  [disabled]="isSubmittingReview()"
+                >
+                  @if (!isSubmittingReview()) {
+                    {{ 'submitReview' | translate }}
+                  } @else {
+                    {{ 'submitting' | translate }}...
+                  }
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      }
+
+      <div class="pd-reviews__body" [class.pd-reviews__body--empty]="reviews().length === 0">
+
+        @if (reviews().length > 0) {
+          <aside class="pd-dist">
+            <div class="pd-dist__avg">
+              <span class="pd-dist__big">{{ averageRating() }}</span>
+              <div class="pd-dist__stars">{{ getStars(averageRating()) }}</div>
+              <span class="pd-dist__total">{{ reviews().length }} {{ 'reviews' | translate }}</span>
+            </div>
+            <div class="pd-dist__bars">
+              @for (r of [5, 4, 3, 2, 1]; track r) {
+                <div class="pd-dist__bar">
+                  <span class="pd-dist__lbl">{{ r }}★</span>
+                  <div class="pd-dist__track">
+                    <div class="pd-dist__fill" [style.width.%]="getRatingPercentage(r)"></div>
+                  </div>
+                  <span class="pd-dist__pct">{{ getRatingPercentage(r) }}%</span>
+                </div>
+              }
+            </div>
+
+            <div class="pd-dist__cta">
+                @if (!_modalService.isUserLoggedIn()) {
+                  <button
+                    (click)="_modalService.openLogInModal()"
+                    class="pd-btn pd-btn--orange pd-btn--full"
+                  >
+                    {{ 'loginToReview' | translate }}
+                  </button>
+                } @else if (hasUserReviewed()) {
+                  <div class="pd-alert pd-alert--info">
+                    {{ 'youHaveReviewedThis' | translate }}
+                  </div>
+                } @else if (!showReviewForm()) {
+                  <button
+                    (click)="showReviewForm.set(true)"
+                    class="pd-btn pd-btn--orange pd-btn--full"
+                    [disabled]="hasUserReviewed()"
+                  >
+                    {{ 'addReview' | translate }}
+                  </button>
+                }
+              </div>
+          </aside>
+        }
+
+        <div class="pd-reviews__main">
+
+          <!-- Status alerts outside the form -->
+          @if (reviewSubmitStatus() === 1) {
+            <div class="pd-alert pd-alert--ok">{{ reviewSubmitMessage() }}</div>
+          }
+          @if (reviewSubmitStatus() === 0) {
+            <div class="pd-alert pd-alert--err">{{ reviewSubmitMessage() }}</div>
+          }
+
+          @if (!isLoadingReviews()) {
+            <div class="pd-list">
+              @if (reviews().length === 0) {
+                <div class="pd-list__empty">
+                  <div class="pd-list__empty-icon">💬</div>
+                  <p>{{ 'noReviewsYet' | translate }}</p>
+                  @if (!_modalService.isUserLoggedIn()) {
+                  <button
+                    (click)="_modalService.openLogInModal()"
+                    class="pd-btn pd-btn--orange"
+                  >
+                    {{ 'loginToReview' | translate }}
+                  </button>
+                } @else if (!hasUserReviewed()) {
+                  <button
+                    (click)="showReviewForm.set(true)"
+                    class="pd-btn pd-btn--orange"
+                  >
+                    + {{ 'addReview' | translate }}
+                  </button>
+                } @else {
+                  <div class="pd-alert pd-alert--info">
+                    {{ 'youHaveReviewedThis' | translate }}
+                </div>
+              }
+                </div>
+              }
+
+              @for (review of reviews(); track review.id) {
+                <div class="pd-review-card">
+                  <div class="pd-review-card__head">
+                    <div class="pd-review-card__user">
+                      <img
+                        [src]="review.userAvatar || 'https://cdn-icons-png.flaticon.com/512/709/709699.png'"
+                        class="pd-review-card__avatar"
+                      />
+                      <div>
+                        <strong>{{ review.userName || 'Anonymous' }}</strong>
+                        <time>{{ review.createdAt | date: 'shortDate' }}</time>
+                      </div>
+                    </div>
+                    <div class="pd-review-card__stars">{{ getStars(review.rating) }}</div>
+                  </div>
+
+                  <p class="pd-review-card__body">{{ review.comment }}</p>
+
+                  <!-- Only show delete for the review owner -->
+                  @if (_modalService.loggedInUserId() === review.userId) {
+                    <div class="pd-review-card__foot">
+                      <button class="pd-review-card__del" (click)="deleteReview(review.id!)">
+                        🗑️ {{ 'delete' | translate }}
+                      </button>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="pd-loading pd-loading--sm">
+              <div class="pd-spinner"></div>
+              <p>{{ 'loadingReviews' | translate }}</p>
+            </div>
+          }
+
+        </div>
+      </div>
+    </section>
+  }
+</div>

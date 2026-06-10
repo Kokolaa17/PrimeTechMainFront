@@ -1,0 +1,325 @@
+{
+    "nav": {
+        "top commercial": "FREE SHIPPING WORLDWIDE",
+        "cart": "Cart",
+        "user": "User",
+        "log in": "Log In",
+        "search": "Search...",
+        "total": "Total"
+    },
+    "cart": {
+        "title": "Cart",
+        "loginRequired": "Please log in to view your cart.",
+        "empty": "Your cart is empty.",
+        "subtotal": "Subtotal",
+        "clear": "Clear",
+        "checkout": "Checkout",
+        "checkoutTitle": "Checkout",
+        "shippingAddress": "Shipping Address",
+        "noAddress": "No address found.",
+        "noAddressHint": "Please add a shipping address in your profile first.",
+        "addAddress": "Add",
+        "paymentMethod": "Payment Method",
+        "cashOnDelivery": "Cash on Delivery",
+        "walletBalance": "Wallet Balance",
+        "insufficientBalance": "Insufficient balance. You need",
+        "insufficientBalanceNeed": "but have",
+        "items": "Items",
+        "total": "Total",
+        "placeOrder": "Place Order",
+        "placingOrder": "Placing Order...",
+        "messages": {
+            "orderSuccess": "Order placed successfully!",
+            "orderError": "Failed to place order. Please try again."
+        }
+    },
+    "logIn": {
+        "Email": "Email",
+        "Password": "Password",
+        "don't have an account?": "Don't have an account?",
+        "register": "Register",
+        "messages": {
+            "success": "Login successful!",
+            "unverified": "Email not verified.",
+            "invalid": "Invalid credentials provided.",
+            "genericError": "An error occurred during login."
+        }
+    },
+    "verifyUser": {
+        "Verify User": "Verify User",
+        "Verification Code": "Verification Code",
+        "verify": "Verify",
+        "messages": {
+            "success": "Verification successful! Redirecting to login...",
+            "wrongCode": "Invalid verification code. Please check again.",
+            "genericError": "Error verifying user. Please try again."
+        }
+    },
+    "register": {
+        "Register": "Register",
+        "Name": "Name",
+        "Last Name": "Last Name",
+        "Email": "Email",
+        "Password": "Password",
+        "already have an account?": "Already have an account?",
+        "log in": "Log In",
+        "messages": {
+            "success": "Registration successful! Verification code sent to your email.",
+            "emailExists": "Email is already in use.",
+            "genericError": "An error occurred during registration."
+        }
+    },
+    "userPage": {
+        "User Profile": "User Profile",
+        "Log Out": "Log Out",
+        "Name": "Name",
+        "Email": "Email",
+        "Verified": "Verified",
+        "Role": "Role",
+        "My Wallet": "My Wallet",
+        "Avaiable Balance": "Available Balance",
+        "Total Spent": "Total Spent",
+        "Purchases": "Purchases",
+        "Add Funds": "Add Funds",
+        "New Product": "Products",
+        "Click to add new product": "Click to manage products",
+        "Manage Categories": "Categories",
+        "Click to manage categories": "Click to manage categories",
+        "Users": "Users",
+        "Click here to manage users": "Click to manage users",
+        "Manage Brands": "Brands",
+        "Click to manage brands": "Click to manage brands",
+        "Orders": "Orders",
+        "Click here to manage orders": "Click to manage orders",
+        "Analytics": "Analytics",
+        "Click here to view sales analytics": "Click to view sales analytics",
+        "Available balance": "Available balance",
+        "edit profile": "Edit Profile",
+        "first name": "First name",
+        "last name": "Last name",
+        "avatarUrl": "Avatar URL",
+        "cancel": "Cancel",
+        "save changes": "Save changes",
+        "Custom Amount": "Custom Amount",
+        "Shipping Adress": "Shipping Address",
+        "Click here to manage shipping address": "Click here to manage shipping address",
+        "Available Balance": "Available Balance",
+        "Notifications" : "Notifications",
+        "Order" : "Order",
+        "Awaiting shipment" : "Awaiting shipment",
+        "Awaiting delivery" : "Awaiting delivery",
+        "messages": {
+            "saveSuccess": "Profile updated!",
+            "saveFailed": "Something went wrong. Please try again.",
+            "depositSuccess": "Funds added successfully.",
+            "depositFailed": "Failed to add funds. Please try again."
+        }
+    },
+    "addCategory": {
+        "title": "Add",
+        "titleSpan": "Category",
+        "subtitle": "Fill in the details below to list a new category.",
+        "nameLabel": "Category Name",
+        "namePlaceholder": "e.g. Mobile Phone",
+        "imageLabel": "Image URL",
+        "imagePlaceholder": "https://example.com/icon.svg",
+        "parentSection": "Parent Category",
+        "hasParent": "Has parent category",
+        "selectParent": "Select parent category",
+        "parentLabel": "Parent Category",
+        "submit": "Add Category",
+        "update": "Update Category",
+        "messages": {
+            "successTitle": "Success!",
+            "errorTitle": "Error!",
+            "success": "Category added successfully!",
+            "genericError": "Something went wrong. Please try again.",
+            "alreadyExists": "A category with this name already exists!",
+            "updateSuccess": "Category updated successfully!",
+            "updateError": "Failed to update category!"
+        },
+        "listTitle": "All Categories",
+        "emptyList": "No categories added yet.",
+        "rootBadge": "Root",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "addBrand": {
+        "title": "Add ",
+        "titleSpan": "Brand",
+        "subtitle": "Create and manage your product brands",
+        "nameLabel": "Brand Name",
+        "namePlaceholder": "Enter brand name...",
+        "submit": "Add Brand",
+        "update": "Update Brand",
+        "emptyList": "No brands added yet.",
+        "listTitle": "Registered Brands",
+        "brandBadge": "Brand",
+        "messages": {
+            "addSuccess": "Brand added successfully!",
+            "addError": "Failed to add brand. Please try again.",
+            "updateSuccess": "Brand updated successfully!",
+            "updateError": "Failed to update brand. Please try again."
+        }
+    },
+    "AddProductPage": {
+        "Add Product": "Add Product",
+        "Fill in the details below to list a new product.": "Fill in the details below to list a new product.",
+        "Product Name": "Product Name",
+        "Category": "Category",
+        "Select category": "Select category",
+        "Brand": "Brand",
+        "Select brand": "Select brand",
+        "Description": "Description",
+        "Describe the product": "Describe the product...",
+        "Pricing & Stock": "Pricing & Stock",
+        "Price": "Price",
+        "Stock": "Stock",
+        "Warranty (months)": "Warranty (months)",
+        "Images": "Images",
+        "Images (min. 3)": "Images (min. 3)",
+        "Paste URL and press Enter…": "Paste URL and press Enter…",
+        "messages": {
+            "success": "Product added successfully!",
+            "error": "Failed to add product!",
+            "alreadyExists": "A product with this name already exists!",
+            "imagesRequired": "Images must not be empty, minimum 3 images are required!"
+        },
+        "Products List": "Products List",
+        "No products found": "No products found",
+        "Update Product": "Update Product",
+        "Stock is at danger zone": "Stock is at danger zone!"
+    },
+    "manageUsers": {
+        "title": "Manage Users",
+        "subtitle": "Use the form below to edit user details.",
+        "name": "Name",
+        "surname": "Surname",
+        "email": "Email",
+        "avatarUrl": "Avatar URL",
+        "role": "Role",
+        "user": "User",
+        "admin": "Admin",
+        "manager": "Manager",
+        "updateUser": "Update User",
+        "verified": "Verified",
+        "balance": "Balance",
+        "totalSpent": "Total Spent",
+        "purchases": "Purchases",
+        "orders": "Orders",
+        "Users List": "Users List",
+        "messages": {
+            "updateSuccess": "User updated successfully!",
+            "updateError": "Failed to update user.",
+            "deleteSuccess": "User deleted successfully!",
+            "deleteError": "Failed to delete user."
+        }
+    },
+    "editUserInfo": {
+        "title": "Edit Profile",
+        "subtitle": "Update your personal information",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "avatarUrl": "Avatar URL",
+        "avatarUrlPlaceholder": "https://…",
+        "profilePhoto": "Profile photo",
+        "changePhoto": "Change photo",
+        "removePhoto": "Remove",
+        "photoHint": "JPG, PNG or WebP · max 2 MB",
+        "saveChanges": "Save changes",
+        "cancel": "Cancel",
+        "messages": {
+            "saveSuccess": "Profile updated successfully.",
+            "saveFailed": "Something went wrong. Please try again."
+        }
+    },
+    "viewUserDetailsPage": {
+        "Back to users": "Back to users",
+        "Discount Progress": "Discount Progress",
+        "Every 10 purchases unlocks a discount. Resets after redemption.": "Every 10 purchases unlocks a discount. Resets after redemption.",
+        "No orders yet": "No orders yet",
+        "Discount unlocked": "Discount unlocked!",
+        "Orders": "Orders",
+        "more purchase(s) until next discount": "more purchase(s) until next discount",
+        "loading": "Loading profile…",
+        "verified": "Verified",
+        "notVerified": "Not Verified",
+        "total": "Total"
+    },
+    "homePage": {
+        "Best Prices": "Best Prices",
+        "Incredible Prices on All Your Favorite Items": "Incredible Prices on All Your Favorite Items",
+        "Shop Now": "Shop Now",
+        "Get more for less price": "Get more for less price",
+        "Curbside pickup": "Curbside pickup",
+        "Free shipping": "Free shipping",
+        "Low prices guaranted": "Low price guaranteed",
+        "Avaible to you 24/7": "Available to you 24/7",
+        "View all": "View all",
+        "No products available": "No products available",
+        "Add": "Add",
+        "Sold out": "Sold Out",
+        "In stock": "In stock",
+        "Out of stock": "Out of stock",
+        "Off": "Off",
+        "New": "New",
+        "Mobiles": "Mobiles",
+        "Tabs": "Tabs",
+        "Smart Watches": "Smart Watches"
+    },
+    "analytics": {
+        "loading": "Loading analytics…",
+        "kpi": {
+            "totalRevenue": "Total Revenue",
+            "totalOrders": "Total Orders",
+            "totalUsers": "Total Users",
+            "productsSold": "Products Sold",
+            "avgOrderValue": "Avg Order Value"
+        },
+        "charts": {
+            "dailyRevenue": "Daily Revenue (Last 30 Days)",
+            "orderStatus": "Order Status",
+            "topBySales": "Top Products by Sales",
+            "topByRevenue": "Top Products by Revenue",
+            "topCustomers": "Top Customers by Spend",
+            "paymentMethods": "Payment Methods",
+            "lowStock": "Low Stock Alerts"
+        },
+        "labels": {
+            "orders": "orders",
+            "sold": "sold",
+            "card": "Card",
+            "cash": "Cash",
+            "paypal": "PayPal",
+            "allStocked": "All products are well stocked ✅",
+            "outOfStock": "OUT OF STOCK",
+            "left": "left"
+        }
+    },
+    "orders": {
+        "title": "Order Management",
+        "loading": "Loading orders…",
+        "empty": "No orders found",
+        "ordersCount": "orders",
+        "filters": {
+            "all": "All"
+        },
+        "table": {
+            "id": "#ID",
+            "customer": "Customer",
+            "date": "Date",
+            "items": "Items",
+            "payment": "Payment",
+            "total": "Total",
+            "status": "Status",
+            "actions": "Actions"
+        },
+        "actions": {
+            "markAsPaid": "Mark as Paid",
+            "markAsShipped": "Mark as Shipped",
+            "markAsDelivered": "Mark as Delivered",
+            "cancelOrder": "Cancel Order"
+        },
+        "uid": "UID"
+    }
+}

@@ -1,0 +1,203 @@
+<section class="cart">
+  <button (click)="closeCart()" class="close-button">✕</button>
+
+  <!-- ─── CART STEP ─────────────────────────────────────────── -->
+  @if (step() === 'cart') {
+    <h2 class="cart-title">{{ 'cart.title' | translate }}</h2>
+
+    @if (loggedInUserId() == null) {
+      <div class="empty-state">
+        <p>{{ 'cart.loginRequired' | translate }}</p>
+      </div>
+    } @else if (productsInCart().length === 0) {
+      <div class="empty-state">
+        <p>{{ 'cart.empty' | translate }}</p>
+      </div>
+    } @else {
+      <div class="products">
+        @for (item of productsInCart(); track item.cartItemId) {
+          <div class="cart-card">
+            <img class="cart-card__thumb" [src]="item.productImage" [alt]="item.productName" />
+            <div class="cart-card__info">
+              <p class="cart-card__name">{{ item.productName }}</p>
+
+              <div class="cart-card__prices">
+                <span class="cart-card__price">{{ item.unitPrice }}$</span>
+                @if (item.oldPrice) {
+                  <span class="cart-card__original">{{ item.oldPrice }}$</span>
+                }
+              </div>
+
+              <div class="cart-card__prices">
+                <span style="font-size: 12px; color: #888;">{{ 'cart.subtotal' | translate }}: </span>
+                <span class="cart-card__price" style="font-size: 13px;">{{ item.subTotal }}$</span>
+              </div>
+
+              <div class="cart-card__qty">
+                <button class="qty-btn" [disabled]="item.quantity === 1" (click)="decreaseQty(item)">−</button>
+                <span class="qty-value">{{ item.quantity }}</span>
+                <button class="qty-btn" (click)="increaseQty(item)">+</button>
+              </div>
+            </div>
+
+            <button (click)="removeFromCart(item.cartItemId)" class="delete-button">
+              <i class="fa-solid fa-trash" style="color: #fff;"></i>
+            </button>
+          </div>
+        }
+      </div>
+
+      <div class="cart-footer">
+        <div class="total-container">
+          <span class="cart-footer__label">{{ 'nav.total' | translate }}</span>
+          <span class="cart-footer__total">${{ totalAmount() }}</span>
+        </div>
+
+        <div class="cart-actions">
+          <button class="clear-cart-button" (click)="clearCart()">
+            <i class="fa-solid fa-trash-can"></i> {{ 'cart.clear' | translate }}
+          </button>
+          <button class="checkout-button" (click)="goToCheckout()">
+            {{ 'cart.checkout' | translate }} →
+          </button>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- ─── CHECKOUT STEP ─────────────────────────────────────── -->
+  @if (step() === 'checkout') {
+    <h2 class="cart-title">
+      <button class="back-button" (click)="backToCart()">←</button>
+      {{ 'cart.checkoutTitle' | translate }}
+    </h2>
+
+    <div class="checkout-body">
+
+      <!-- Shipping Address -->
+      <div class="checkout-section">
+        <h3 class="checkout-section__title">
+          <i class="fa-solid fa-location-dot"></i> {{ 'cart.shippingAddress' | translate }}
+        </h3>
+
+        @if (addresses().length === 0) {
+          <div class="no-address">
+            <p>{{ 'cart.noAddress' | translate }}</p>
+            <span>{{ 'cart.noAddressHint' | translate }}</span>
+            <button><i class="fa-solid fa-location-dot"></i> {{ 'cart.addAddress' | translate }}</button>
+          </div>
+        } @else {
+          <div class="address-list">
+            @for (addr of addresses(); track addr.id) {
+              <label class="address-card" [class.selected]="selectedAddressId() === addr.id">
+                <input
+                  type="radio"
+                  name="address"
+                  [value]="addr.id"
+                  [checked]="selectedAddressId() === addr.id"
+                  (change)="selectedAddressId.set(addr.id)"
+                />
+                <div class="address-card__info">
+                  <span class="address-card__line">{{ addr.street }}</span>
+                  <span class="address-card__sub">{{ addr.city }}, {{ addr.country }} {{ addr.zipCode }}</span>
+                </div>
+                @if (selectedAddressId() === addr.id) {
+                  <i class="fa-solid fa-circle-check address-card__check"></i>
+                }
+              </label>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Payment Method -->
+      <div class="checkout-section">
+        <h3 class="checkout-section__title">
+          <i class="fa-solid fa-credit-card"></i> {{ 'cart.paymentMethod' | translate }}
+        </h3>
+
+        <div class="payment-options">
+          <!-- Cash -->
+          <label class="payment-card" [class.selected]="selectedPaymentMethod() === PAYMENT_CASH">
+            <input
+              type="radio"
+              name="payment"
+              [value]="PAYMENT_CASH"
+              [checked]="selectedPaymentMethod() === PAYMENT_CASH"
+              (change)="onPaymentMethodChange(PAYMENT_CASH)"
+            />
+            <i class="fa-solid fa-money-bill-wave payment-card__icon"></i>
+            <span class="payment-card__label">{{ 'cart.cashOnDelivery' | translate }}</span>
+            @if (selectedPaymentMethod() === PAYMENT_CASH) {
+              <i class="fa-solid fa-circle-check payment-card__check"></i>
+            }
+          </label>
+
+          <!-- Balance -->
+          <label class="payment-card" [class.selected]="selectedPaymentMethod() === PAYMENT_BALANCE">
+            <input
+              type="radio"
+              name="payment"
+              [value]="PAYMENT_BALANCE"
+              [checked]="selectedPaymentMethod() === PAYMENT_BALANCE"
+              (change)="onPaymentMethodChange(PAYMENT_BALANCE)"
+            />
+            <i class="fa-solid fa-wallet payment-card__icon"></i>
+            <div class="payment-card__body">
+              <span class="payment-card__label">{{ 'cart.walletBalance' | translate }}</span>
+              <span class="payment-card__balance">${{ userBalance() }}</span>
+            </div>
+            @if (selectedPaymentMethod() === PAYMENT_BALANCE) {
+              <i class="fa-solid fa-circle-check payment-card__check"></i>
+            }
+          </label>
+        </div>
+
+        <!-- Balance warning -->
+        @if (balanceInsufficient()) {
+          <div class="balance-warning">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            {{ 'cart.insufficientBalance' | translate }}
+            ${{ totalAmount() }} {{ 'cart.insufficientBalanceNeed' | translate }}
+            ${{ userBalance() }}.
+          </div>
+        }
+      </div>
+
+      <!-- Order Summary -->
+      <div class="checkout-section order-summary">
+        <div class="summary-row">
+          <span>{{ 'cart.items' | translate }} ({{ totalItems() }})</span>
+          <span>${{ totalAmount() }}</span>
+        </div>
+        <div class="summary-row summary-row--total">
+          <span>{{ 'cart.total' | translate }}</span>
+          <span class="summary-total">${{ totalAmount() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Place Order -->
+    <div class="cart-footer">
+      <button
+        class="place-order-button"
+        (click)="placeOrder()"
+        [disabled]="!selectedAddressId() || balanceInsufficient() || isPlacingOrder()"
+        [class.disabled]="!selectedAddressId() || balanceInsufficient()">
+        @if (isPlacingOrder()) {
+          <i class="fa-solid fa-spinner fa-spin"></i> {{ 'cart.placingOrder' | translate }}
+        } @else {
+          <i class="fa-solid fa-bag-shopping"></i> {{ 'cart.placeOrder' | translate }}
+        }
+      </button>
+    </div>
+  }
+
+  <!-- ─── FEEDBACK MESSAGES ─────────────────────────────────── -->
+  @if (checkoutStatus() === 400) {
+    <p class="error-message">{{ checkoutMessage() }}</p>
+  }
+  @if (checkoutStatus() === 200) {
+    <p class="success-message">{{ checkoutMessage() }}</p>
+  }
+</section>

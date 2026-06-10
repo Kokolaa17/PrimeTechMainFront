@@ -1,0 +1,110 @@
+<section class="categories-slider">
+    <div class="section-header">
+        <div class="section-title">
+            <span class="title-bar"></span>
+            <img [src]="categoryData.image" [alt]="categoryData.name + ' Icon'" class="section-icon">
+            {{ categoryData.name | translate }}
+        </div>
+        <button class="view-all" (click)="goToCategory(categoryData.id)">
+            {{'homePage.View all' | translate}} <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <swiper-container
+        slides-per-view="2"
+        speed="500"
+        space-between="16"
+        autoplay-delay="3000"
+        autoplay-pause-on-mouse-enter="true"
+        loop="true"
+        breakpoints='{
+            "850": { "slidesPerView": 5 },
+            "1300": { "slidesPerView": 7 }
+        }'
+    >
+        @for (product of products(); track $index) {
+            <swiper-slide>
+                <div class="product-card">
+                    <div class="image-container">
+                        <img [src]="product.images[0]" [alt]="product.name + ' thumbnail'">
+
+                        <span
+                            class="badge-stock"
+                            [class.in-stock]="product.stock > 0"
+                            [class.out-of-stock]="product.stock <= 0"
+                        >
+                        {{ product.stock > 0
+                        ? product.stock + ' ' + ('homePage.In stock' | translate)
+                        : ('homePage.Out of stock' | translate)
+                        }}                        </span>
+
+                       @if (isNew(product.createdAt)) {
+                            <span class="badge-label">{{ 'homePage.New' | translate }}</span>
+                            } @else if (product.salesCount > 50) {
+                            <span class="badge-label">{{ 'homePage.Hot' | translate }}</span>
+                        }
+                        @if (product.oldPrice && product.oldPrice > product.price) {
+                            <span class="badge-discount">
+                                -{{ getDiscountPercent(product.oldPrice, product.price) }}% {{'homePage.Off' | translate}}
+                            </span>
+                        }
+                    </div>
+
+                    <div class="rating">
+                        <span class="stars">{{ getStars(product.averageRating) }}</span>
+                        <span>{{ product.averageRating | number:'1.1-1' }} ({{ product.reviewsCount }})</span>
+                    </div>
+
+                    <article>
+                        <h2>{{ product.name }}</h2>
+                       <div class="price-row">
+                            <span class="price-main" [class.out-of-stock]="product.stock === 0">
+                                {{ product.price }}$
+                            </span>
+
+                            @if (product.oldPrice && product.oldPrice > product.price) {
+                                <span class="price-old">
+                                    {{ product.oldPrice }}$
+                                </span>
+                            }
+                        </div>
+                        <div class="warranty">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            {{ product.warrantyMonths }} mo. warranty
+                        </div>
+                    </article>
+
+                    <div class="action-buttons">
+                        <button class="details-button" (click)="goToDetails(product.id)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button
+                            class="add-to-cart-button"
+                            [disabled]="product.stock === 0"
+                            (click)="addToCart(product.id)"
+                        >
+                            <i class="fa-solid fa-cart-arrow-down"></i>
+                            {{ product.stock === 0 ? ('homePage.Sold out' | translate) : ('homePage.Add' | translate) }}
+                        </button>
+                    </div>
+
+                    @if (addToCartErrors().get(product.id)) {
+                        <div class="display-error">
+                            <p>{{ addToCartErrors().get(product.id) }}</p>
+                        </div>
+                    }
+                    @if (addToCartSuccess().get(product.id)) {
+                        <div class="display-success">
+                            <i class="fa-solid fa-box-archive fa-beat"></i>
+                        </div>
+                    }
+                </div>
+            </swiper-slide>
+        }
+        @empty {
+            <div class="no-products">
+                <p>{{ 'homePage.No products available' | translate }}</p>
+            </div>
+        }
+    </swiper-container>
+</section>

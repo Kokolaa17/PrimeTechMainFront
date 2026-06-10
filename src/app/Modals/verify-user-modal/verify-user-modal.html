@@ -1,0 +1,29 @@
+<section>
+  <div class="verify-form">
+    <button (click)="closeVerify()" class="closeButton">
+      <i class="fa-solid fa-x"></i>
+    </button>
+    <h2>{{ 'verifyUser.Verify User' | translate }}</h2>
+    <form [formGroup]="verifyForm" (submit)="verifyUser()">
+      <div class="inputs">
+        <input id="email-v" type="email" formControlName="email">
+        <label for="email-v">
+          <i class="fa-solid fa-envelope"></i> {{ 'logIn.Email' | translate }}
+        </label>
+      </div>
+      <div class="inputs">
+        <input id="code-v" type="text" formControlName="code">
+        <label for="code-v">
+          <i class="fa-solid fa-lock"></i> {{ 'verifyUser.Verification Code' | translate }}
+        </label>
+      </div>
+      <button [disabled]="verifyForm.invalid" [style]="{ backgroundColor: verifyForm.invalid ? '#ccc' : '#EC5E2A' }" type="submit" class="verify-button">
+        {{ 'verifyUser.verify' | translate }}
+      </button>
+    </form>
+  </div> @if (isVerifySuccessful() === true) { <div class="success-message">
+    <p>{{ verifyMessage() | translate }}</p>
+  </div> } @else if (isVerifySuccessful() === false) { <div class="error-message">
+    <p>{{ verifyMessage() | translate }}</p>
+  </div> }
+</section>
